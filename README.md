@@ -1,6 +1,6 @@
 # Benchmarking methods for integrating spatial and single-cell transcriptomics data
 
-![image](https://user-images.githubusercontent.com/44384930/121382531-46252f80-c979-11eb-853f-7d8d19f3dc8d.png)
+Pipeline.png<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/121383040-ba5fd300-c979-11eb-91ec-af017486f3c0.png">
 
 Implementation description
 
