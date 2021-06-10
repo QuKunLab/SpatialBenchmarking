@@ -15,7 +15,7 @@ import copy
 from sklearn.model_selection import KFold
 import pandas as pd
 import multiprocessing
-import matplotlib as mpl 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 import scanpy as sc
 import warnings
@@ -24,6 +24,7 @@ import seaborn as sns
 from sklearn.metrics import mean_squared_error
 from scipy.spatial.distance import jensenshannon
 from scipy.stats import pearsonr,ttest_ind,mannwhitneyu
+import matplotlib
 
 def Simulated(spatial_rna, spatial_meta, spatial_loc, CoordinateXlable, CoordinateYlable, window, outdir):
     if os.path.exists(outdir):
@@ -63,7 +64,7 @@ def Simulated(spatial_rna, spatial_meta, spatial_loc, CoordinateXlable, Coordina
     print ('The simulated spot has size ' + str(combined_spot_clusters.shape[0]))
 
 
-def SSIM_Calculation(im1,im2,M=1):
+def cal_ssim(im1,im2,M=1):
     im1, im2 = im1/im1.max(), im2/im2.max()
     mu1 = im1.mean()
     mu2 = im2.mean()
@@ -109,7 +110,7 @@ def CalculateMetric(outdir,Methods,gd_celltype):
             else:
                 P = pearsonr(Predict_results.loc[i,:],gd_results.loc[i,:])
                 PCC.append(P[0])
-                SSIM.append(SSIM_Calculation(Predict_results.loc[i,:],gd_results.loc[i,:]))
+                SSIM.append(cal_ssim(Predict_results.loc[i,:],gd_results.loc[i,:]))
                 RMSE.append(rsme(Predict_results.loc[i,:],gd_results.loc[i,:]))
                 JSD = jensenshannon(Predict_results.loc[i,:],gd_results.loc[i,:])
                 JS.append(JSD**2)
@@ -124,4 +125,4 @@ def CalculateMetric(outdir,Methods,gd_celltype):
         Metric['SSIM'] = SSIM
         Metric['RMSE'] = RMSE
         Metric['JS'] = JS
-        Metric.to_csv(outdir + '/' + Method + '_Cellmapping_metric.txt',sep = '\t') 
+        Metric.to_csv(outdir + '/' + Method + '_Cellmapping_metric.txt',sep = '\t')

@@ -4,13 +4,17 @@
 
 Implementation description
 
-We collected 14 all fourteen paired datasetsdesigned a pipeline to systematically evaluate the accuracy of these integration methods for predicting the RNA spatial distribution. Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of Tangram, Seurat, SpaOTsc, and novoSpaRc for assigning cell locations.
+We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate the accuracy of these integration methods for predicting the RNA spatial distribution. 2) Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. 3) Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of Tangram, Seurat, SpaOTsc, and novoSpaRc for assigning cell locations.
 
-Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) and you can run the jupyter notebook to reproduce the results and figures in our paper.
+Dependencies and requirements
+
+Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) and you can run the jupyter notebook of CellAssignment.ipynb SpatialGenes.ipynb and to reproduce the results and figures in our paper.
 
 Tutorial
 
 The tutorial notebook is a step-by-step example showing how to assess these integration methods on the spatially measured genes, and how to use them to predict new spatial gene patterns and cell locations.
+
+For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking and document in doc/API_reference.pdf.
 
 Datasets
 

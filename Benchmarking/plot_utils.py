@@ -66,7 +66,6 @@ def scale_plus(df):
 
 
 class count:
-    #__slots__ = ['raw_count_path', 'impute_count_path']
     def __init__(self, raw_count_path, impute_count_path, tool, outdir, metric):
         self.raw_count = pd.read_csv(raw_count_path, header=0, sep="\t")
         self.impute_count = pd.read_csv(impute_count_path, header=0, index_col=0)
