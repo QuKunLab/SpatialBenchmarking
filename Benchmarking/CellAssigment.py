@@ -22,33 +22,24 @@ import seaborn as sns
 from sklearn.metrics import mean_squared_error
 from scipy.spatial.distance import jensenshannon
 from scipy.stats import pearsonr,ttest_ind,mannwhitneyu
+import matplotlib
 
 warnings.filterwarnings('ignore')
 
-#SpaOTsc
-from spaotsc import SpaOTsc
 from scipy.spatial import distance_matrix
 from sklearn.metrics import matthews_corrcoef
 from scipy import stats
 
-#novoSpaRc
-import novosparc as nc
 from scipy.spatial.distance import cdist
 import h5py
 
-# add Tangram to path
 import anndata
 import torch
 import sys
 
-sys.path.append("Tangram-master") 
-import mapping.utils
-import mapping.mapping_optimizer
-import mapping.plot_utils
-
 
 class MappingCell:
-    def __init__(self, RNA_path, Spatial_path, location_path, count_path = None, device = 'CPU', scrna_meta = None, subclass_mapper = None, gd_result = None, outdir = None):
+    def __init__(self, RNA_path, Spatial_path, location_path = None, count_path = None, device = None, scrna_annotation = None, annotatetype = None, gd_result = None, outdir = None):
         self.RNA_path = RNA_path
         self.Spatial_path = Spatial_path
         self.RNA_data =  pd.read_csv(RNA_path, sep='\t', index_col = 0)
@@ -57,12 +48,18 @@ class MappingCell:
         self.device = device
         if count_path != None:
             self.count =pd.read_csv(count_path,sep='\t', index_col = 0).astype(int)
-        self.scrna_meta = scrna_meta
-        self.subclass_mapper = subclass_mapper
-        self.gd =  pd.read_csv(gd_result, sep='\t', index_col = 0)
+        self.scrna_annotationfiles = scrna_annotation
+        self.scrna_annotation = pd.read_csv(scrna_annotation, sep='\t', header=0)
+        if gd_result != None:
+            self.gd =  pd.read_csv(gd_result, sep='\t', index_col = 0)
+        else:
+            self.gd = None
+        self.annotatetype = annotatetype
         self.outdir = outdir
 
     def novoSpaRc(self):
+        import novosparc as nc
+        from spaotsc import SpaOTsc
         gene_names = self.RNA_data.index.values
         dge = self.RNA_data.values
         dge = dge.T
@@ -71,6 +68,7 @@ class MappingCell:
     
         hvg = np.argsort(np.divide(np.var(dge,axis=0),np.mean(dge,axis=0)+0.0001))
         dge_hvg = dge[:,hvg[-2000:]]
+        #dge_hvg = dge
         
         num_locations = self.locations.shape[0]
     
@@ -92,28 +90,29 @@ class MappingCell:
         print ('we use novoSpaRc to predict')
         np.save(self.outdir + '/novoSpaRc_alignment.npy',gw)
         novoSpaRc_map = gw
-        sc_rna_meta = pd.read_csv(self.scrna_meta, sep = '\t', header = 0, index_col = 0)
-        novoSpaRc_results=pd.DataFrame(np.zeros((novoSpaRc_map.shape[1],len(np.unique(sc_rna_meta['subclass'])))),columns=np.unique(sc_rna_meta['subclass']))
-        for c in np.unique(sc_rna_meta['subclass']):
-            novoSpaRc_results.loc[:,c] =  novoSpaRc_map[np.where(sc_rna_meta.subclass == c)[0],:].mean(axis=0)
-        if self.subclass_mapper is not None:
-            print ('Mapper is using') 
-            novoSpaRc_results.columns = [self.subclass_mapper[c] for c in novoSpaRc_results.columns]
-            novoSpaRc_pro_results = pd.DataFrame(np.zeros((len(novoSpaRc_results.index), len(np.unique(novoSpaRc_results.columns)))),columns=np.unique(novoSpaRc_results.columns))
-            for c in np.unique(novoSpaRc_pro_results.columns):
-                if len(novoSpaRc_results.loc[:,c].shape) > 1:
-                    print (c)
-                    novoSpaRc_pro_results.loc[:,c] = novoSpaRc_results.loc[:,c].sum(axis=1).values
-                else:
-                    novoSpaRc_pro_results.loc[:,c] = novoSpaRc_results.loc[:,c].values
-            novoSpaRc_results = novoSpaRc_pro_results
-        CellType = novoSpaRc_results.columns & self.gd.columns
-        novoSpaRc_results = novoSpaRc_results[CellType]
+        scrna_annotation = self.scrna_annotation[self.annotatetype]
+        novoSpaRc_results=pd.DataFrame(np.zeros((novoSpaRc_map.shape[1],len(np.unique(scrna_annotation)))),columns=np.unique(scrna_annotation))
+        for c in np.unique(scrna_annotation):
+            novoSpaRc_results.loc[:,c] =  novoSpaRc_map[np.where(scrna_annotation == c)[0],:].mean(axis=0)
+        mapperdict = dict(zip(self.scrna_annotation[self.annotatetype],self.scrna_annotation['celltype']))
+        novoSpaRc_results.columns = [mapperdict[c] for c in novoSpaRc_results.columns]
+        novoSpaRc_pro_results = pd.DataFrame(np.zeros((len(novoSpaRc_results.index), len(np.unique(novoSpaRc_results.columns)))),columns=np.unique(novoSpaRc_results.columns))
+        for c in np.unique(novoSpaRc_pro_results.columns):
+            if len(novoSpaRc_results.loc[:,c].shape) > 1:
+                print (c)
+                novoSpaRc_pro_results.loc[:,c] = novoSpaRc_results.loc[:,c].sum(axis=1).values
+            else:
+                novoSpaRc_pro_results.loc[:,c] = novoSpaRc_results.loc[:,c].values
+        novoSpaRc_results = novoSpaRc_pro_results
+        if self.gd is None:
+            CellType = novoSpaRc_results.columns & self.gd.columns
+            novoSpaRc_results = novoSpaRc_results[CellType]
         novoSpaRc_results = (novoSpaRc_results.T/novoSpaRc_results.sum(axis=1)).T
         novoSpaRc_results = novoSpaRc_results.fillna(0)
         novoSpaRc_results.to_csv(self.outdir + '/novoSpaRc_CellType_Proportion.txt')     
         
     def SpaOTsc(self):
+        from spaotsc import SpaOTsc
         df_sc = self.RNA_data.T
         df_IS = self.Spatial_data
         pts = self.locations
@@ -140,27 +139,32 @@ class MappingCell:
             gamma[:,j] = gamma[:,j]/np.sum(gamma[:,j])
         np.save(self.outdir + '/SpaOTsc_alignment.npy',gamma)
         SpaOTsc_map = gamma
-        sc_rna_meta = pd.read_csv(self.scrna_meta, sep = '\t', header = 0, index_col = 0)
-        SpaOTsc_results=pd.DataFrame(np.zeros((SpaOTsc_map.shape[1],len(np.unique(sc_rna_meta['subclass'])))),columns=np.unique(sc_rna_meta['subclass']))
-        for c in np.unique(sc_rna_meta['subclass']):
-            SpaOTsc_results.loc[:,c] =  SpaOTsc_map[np.where(sc_rna_meta.subclass == c)[0],:].mean(axis=0)
-        if self.subclass_mapper is not None:
-            SpaOTsc_results.columns = [self.subclass_mapper[c] for c in SpaOTsc_results.columns]
-            SpaOTsc_pro_results = pd.DataFrame(np.zeros((len(SpaOTsc_results.index), len(np.unique(SpaOTsc_results.columns)))),columns=np.unique(SpaOTsc_results.columns))
-            for c in np.unique(SpaOTsc_pro_results.columns):
-                if len(SpaOTsc_results.loc[:,c].shape) > 1:
-                    print (c)
-                    SpaOTsc_pro_results.loc[:,c] = SpaOTsc_results.loc[:,c].sum(axis=1).values
-                else:
-                    SpaOTsc_pro_results.loc[:,c] = SpaOTsc_results.loc[:,c].values
-            SpaOTsc_results = SpaOTsc_pro_results
-        CellType = SpaOTsc_results.columns & self.gd.columns
-        SpaOTsc_results = SpaOTsc_results[CellType]
+        scrna_annotation = self.scrna_annotation[self.annotatetype]
+        SpaOTsc_results=pd.DataFrame(np.zeros((SpaOTsc_map.shape[1],len(np.unique(scrna_annotation)))),columns=np.unique(scrna_annotation))
+        for c in np.unique(scrna_annotation):
+            SpaOTsc_results.loc[:,c] =  SpaOTsc_map[np.where(scrna_annotation == c)[0],:].mean(axis=0)
+        mapperdict = dict(zip(self.scrna_annotation[self.annotatetype],self.scrna_annotation['celltype']))
+        SpaOTsc_results.columns = [mapperdict[c] for c in SpaOTsc_results.columns]
+        SpaOTsc_pro_results = pd.DataFrame(np.zeros((len(SpaOTsc_results.index), len(np.unique(SpaOTsc_results.columns)))),columns=np.unique(SpaOTsc_results.columns))
+        for c in np.unique(SpaOTsc_pro_results.columns):
+            if len(SpaOTsc_results.loc[:,c].shape) > 1:
+                print (c)
+                SpaOTsc_pro_results.loc[:,c] = SpaOTsc_results.loc[:,c].sum(axis=1).values
+            else:
+                SpaOTsc_pro_results.loc[:,c] = SpaOTsc_results.loc[:,c].values
+        SpaOTsc_results = SpaOTsc_pro_results
+        if self.gd is None:
+            CellType = SpaOTsc_results.columns & self.gd.columns
+            SpaOTsc_results = SpaOTsc_results[CellType]
         SpaOTsc_results = (SpaOTsc_results.T/SpaOTsc_results.sum(axis=1)).T
         SpaOTsc_results = SpaOTsc_results.fillna(0)
         SpaOTsc_results.to_csv(self.outdir + '/SpaOTsc_CellType_proportion.txt')
-    
+
     def Tangram(self,):
+        sys.path.append("FigureData/Tangram-master")
+        import mapping.utils
+        import mapping.mapping_optimizer
+        import mapping.plot_utils
         rna_df = self.RNA_data
         adata = anndata.AnnData(rna_df.T)
         spatial_df = self.Spatial_data
@@ -186,24 +190,26 @@ class MappingCell:
             S=S, G=G, d=d, device=device, **hyperparm, target_count = space_data.obs.cell_count.sum()
         )
         output_all, F_out_all = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
-        sc_rna_meta = pd.read_csv(scrna_meta, sep = '\t', header=0,index_col = 0)
-        adata.obs = sc_rna_meta
+        scrna_annotation = self.scrna_annotation
+        adata.obs = scrna_annotation
     
-        df_classes = mapping.utils.one_hot_encoding(adata.obs.subclass)
+        df_classes = mapping.utils.one_hot_encoding(adata.obs[self.annotatetype])
         prob_assign = mapping.utils.transfer_annotations_prob_filter(output_all, F_out_all, df_classes)
         prob_assign.to_csv(self.outdir + '/Tangram_alignment.txt')
         Tangram_results = pd.read_csv(self.outdir + '/Tangram_alignment.txt',index_col=0)
-        if self.subclass_mapper is not None:
-            Tangram_results.columns = [self.subclass_mapper[c] for c in Tangram_results.columns]
-            Tangram_pro_results = pd.DataFrame(np.zeros((len(Tangram_results.index), len(np.unique(Tangram_results.columns)))),columns=np.unique(Tangram_results.columns))
-            for c in np.unique(Tangram_pro_results.columns):
-                if len(Tangram_results.loc[:,c].shape) > 1:
-                    Tangram_pro_results.loc[:,c] = Tangram_results.loc[:,c].sum(axis=1).values
-                else:
-                    Tangram_pro_results.loc[:,c] = Tangram_results.loc[:,c].values
-            Tangram_results = Tangram_pro_results
-        CellType = Tangram_results.columns & self.gd.columns
-        Tangram_results = Tangram_results[CellType]
+        mapperdict = dict(zip(self.scrna_annotation[self.annotatetype],self.scrna_annotation['celltype']))
+        Tangram_results.columns = [mapperdict[c] for c in Tangram_results.columns]
+        Tangram_pro_results = pd.DataFrame(np.zeros((len(Tangram_results.index), len(np.unique(Tangram_results.columns)))),columns=np.unique(Tangram_results.columns))
+        for c in np.unique(Tangram_pro_results.columns):
+            if len(Tangram_results.loc[:,c].shape) > 1:
+                print (c)
+                Tangram_pro_results.loc[:,c] = Tangram_results.loc[:,c].sum(axis=1).values
+            else:
+                Tangram_pro_results.loc[:,c] = Tangram_results.loc[:,c].values
+        Tangram_results = Tangram_pro_results
+        if self.gd is None:
+            CellType = Tangram_results.columns & self.gd.columns
+            Tangram_results = Tangram_results[CellType]
         Tangram_results = (Tangram_results.T/Tangram_results.sum(axis=1)).T
         Tangram_results = Tangram_results.fillna(0)
         Tangram_results.to_csv(self.outdir + '/Tangram_CellType_proportion.txt')
@@ -211,27 +217,33 @@ class MappingCell:
     def Seurat(self):
         rna_df = self.RNA_path
         spatial_df = self.Spatial_path
-        scrna_meta = self.scrna_meta
+        scrna_meta = self.scrna_annotation
         print ('we use seurat to predict')
-        os.popen('Rscript Seurat_CellAssigment.r ' + spatial_df + ' ' + rna_df + ' ' + scrna_meta + ' ' + self.outdir)
-        print ('Rscript Seurat_CellAssigment.rr ' + spatial_df + ' ' + rna_df + ' ' + scrna_meta + ' ' + self.outdir)
-        seurat_results = pd.read_csv(self.outdir + '/Seurat_alignment.txt', index_col=0)
+        os.system('Rscript Benchmarking/Seurat_CellAssigment.r ' + spatial_df + ' ' + rna_df + ' ' + self.scrna_annotationfiles + ' ' + self.annotatetype + ' ' + self.outdir)
+        print ('Rscript Benchmarking/Seurat_CellAssigment.r ' + spatial_df + ' ' + rna_df + ' ' + self.scrna_annotationfiles + ' ' + self.annotatetype + ' ' + self.outdir)
+        #subprocess.run(['Rscript','Benchmarking/Seurat_CellAssigment.r',spatial_df,rna_df,self.scrna_annotationfiles,self.annotatetype,self.outdir])
+        seurat_results = pd.read_csv(self.outdir + 'Seurat_alignment.txt', index_col=0)
         seurat_results = seurat_results.iloc[:,1:-1]
         Cols = seurat_results.columns
         used_ind = [(x.split('score.')[1]) for x in Cols]
         seurat_results.columns = used_ind
         seurat_results.index = np.arange(len(seurat_results))
-        if self.subclass_mapper is not None:
-            seurat_results.columns = [self.subclass_mapper[c] for c in seurat_results.columns]
-            seurat_pro_results = pd.DataFrame(np.zeros((len(seurat_results.index), len(np.unique(seurat_results.columns)))),columns=np.unique(seurat_results.columns))
-            for c in np.unique(seurat_results.columns):
-                if len(seurat_pro_results.loc[:,c].shape) > 1:
-                    seurat_pro_results.loc[:,c] = seurat_results.loc[:,c].sum(axis=1).values
-                else:
-                    seurat_pro_results.loc[:,c] = seurat_results.loc[:,c].values
-            seurat_results = seurat_pro_results
-        CellType = seurat_results.columns & self.gd.columns
-        seurat_results = seurat_results[CellType]
+        mapperdict = dict(zip(self.scrna_annotation[self.annotatetype],self.scrna_annotation['celltype']))
+        print (mapperdict)
+        print (Cols)
+        print (seurat_results.columns)
+        seurat_results.columns = [mapperdict[c] for c in seurat_results.columns]
+        seurat_pro_results = pd.DataFrame(np.zeros((len(seurat_results.index), len(np.unique(seurat_results.columns)))),columns=np.unique(seurat_results.columns))
+        for c in np.unique(seurat_pro_results.columns):
+            if len(seurat_results.loc[:,c].shape) > 1:
+                print (c)
+                seurat_pro_results.loc[:,c] = seurat_results.loc[:,c].sum(axis=1).values
+            else:
+                seurat_pro_results.loc[:,c] = seurat_results.loc[:,c].values
+        seurat_results = seurat_pro_results
+        if self.gd is None:
+            CellType = seurat_results.columns & self.gd.columns
+            seurat_results = seurat_results[CellType]
         seurat_results = (seurat_results.T/seurat_results.sum(axis=1)).T
         seurat_results = seurat_results.fillna(0)
         seurat_results.to_csv(self.outdir + '/seurat_CellType_proportion.txt')
@@ -246,4 +258,5 @@ class MappingCell:
             self.Seurat()
         if "SpaOTsc" in Tools:
             self.SpaOTsc()
+
 
