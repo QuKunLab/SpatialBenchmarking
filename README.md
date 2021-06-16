@@ -8,13 +8,13 @@ We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate
 
 Dependencies and requirements
 
-Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) and you can run the jupyter notebook of CellAssignment.ipynb SpatialGenes.ipynb and to reproduce the results and figures in our paper.
+Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) and you can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results and figures in our paper.
 
 Tutorial
 
-The tutorial notebook is a step-by-step example showing how to assess these integration methods on the spatially measured genes, and how to use them to predict new spatial gene patterns and cell locations.
+The tutorial notebook is a step-by-step example showing how to use them to predict new spatial gene patterns and cell locations.
 
-For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking and document in doc/API_reference.pdf.
+For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking direction.
 
 Datasets
 
