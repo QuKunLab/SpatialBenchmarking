@@ -8,11 +8,23 @@ We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate
 
 Dependencies and requirements
 
-Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) and you can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results and figures in our paper.
+Before you run the pipeline, please make sure that you have installed all the seven packages. (gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) :
+1. Before the installation of these packages, please install Miniconda to manage all needed software and dependencies. You can download Miniconda from https://conda.io/miniconda.html.
+2. Download SpatialBenchmarking.zip from https://github.com/QuKunLab/SpatialBenchmarking. Unzipping this package you will see Benchmarkingenvironment.yml located in its folder.
+3. Build isolated environment for SpatialBenchmarking: 
+conda env create -f Benchmarkingenvironment.yml
+4. Activate ATAC-pipe environment:
+source activate Benchmarking
+5. Enter R environment and install the SeuratV3.2.3 by command:
+remotes::install_version("Seurat", version = "3.2.3")
+
+The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take several minutes to install the dependencies.
 
 Tutorial
 
-The tutorial notebook is a step-by-step example showing how to use them to predict new spatial gene patterns and cell locations.
+You can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results and figures in our paper.
+
+If you want to analysis your own data, the tutorial notebook is a step-by-step example showing how to use them to predict new spatial gene patterns and cell locations.
 
 For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking direction.
 

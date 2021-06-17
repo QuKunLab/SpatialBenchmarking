@@ -29,8 +29,8 @@ Norm = Args[10]
 if (Norm != 'norm'){
     Ligerex.leaveout@norm.data <- Ligerex.leaveout@raw.data
 }
-Ligerex.leaveout@var.genes <- features
-#Ligerex.leaveout <- selectGenes(Ligerex.leaveout,datasets.use=c(1))
+#Ligerex.leaveout@var.genes <- features
+Ligerex.leaveout <- selectGenes(Ligerex.leaveout,datasets.use=c(1))
 Ligerex.leaveout <- scaleNotCenter(Ligerex.leaveout)
 k = (length(Ligerex.leaveout@var.genes)-3)
 if (k>20){

@@ -7,7 +7,7 @@ RNAfile = Args[6]
 RNA <- read.table(RNAfile,sep = '\t',header = TRUE,row.names = 1,quote = "")
 RNA <- CreateSeuratObject(counts=RNA, project='RNA', min.cells=0, min.features=0)
 Norm = Args[10]
-if (Norm == 'Norm'){
+if (Norm == 'norm'){
     RNA <- NormalizeData(RNA)
     RNA <- FindVariableFeatures(RNA,nfeatures = 2000)
     RNA <- ScaleData(RNA)
@@ -53,6 +53,7 @@ print ('OK')
 imputation <- TransferData(anchorset = anchors,refdata = refdata,weight.reduction = 'pca',dims = 1:DN)
 
 options(warn = -1)
+print (test_genes)
 
 Imp_New_genes = as.data.frame(imputation@data)[test_genes,]
 
