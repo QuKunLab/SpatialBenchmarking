@@ -40,6 +40,34 @@ import sys
 
 class MappingCell:
     def __init__(self, RNA_path, Spatial_path, location_path = None, count_path = None, device = None, scrna_annotation = None, annotatetype = None, gd_result = None, outdir = None):
+        """
+        @author: wen zhang
+        This function integrates two single-cell datasets, spatial and scRNA-seq,
+        and assign cells to spatial locations in histological sections.
+            
+        Parameters
+        -------
+        RNA_path : str
+        scRNA-seq data count file with Tab-delimited (cells X genes).
+        Spatial_path : str
+        spatial count data file with Tab-delimited, please note that the file has no index.
+        location_path : str
+        spatial spot coordinate file name with Tab-delimited, please note that the file has no index.
+        count_path : str
+        Option,  you must prepared this file when you want to use Tangram (tangram_seq_impute)to prediction gene spatial distribution.
+        device : str
+        Option,  [None,'GPU'], defaults to None.
+        scrna_annotation : str
+        scRNA data cell-type annotation, please note this file must have two columns.
+        annotatetype : str
+        In scrna_annotation file, which columns will be used.
+        gd_result : str
+        Option, each spot contain number of cell types as ground truth
+        outdir : str
+        result file stored direction
+        
+        All the file and parameters can be found in Figure4 folds.
+        """
         self.RNA_path = RNA_path
         self.Spatial_path = Spatial_path
         self.RNA_data =  pd.read_csv(RNA_path, sep='\t', index_col = 0)
