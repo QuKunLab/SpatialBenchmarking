@@ -24,7 +24,7 @@ Tutorial
 
 You can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results and figures in our paper.
 
-If you want to analysis your own data, the tutorial notebook is a example showing how to use them to predict new spatial gene patterns and cell locations.
+If you want to analysis your own data, the doc/Tutorial.pdf is a example showing how to use them to predict new spatial gene patterns and cell locations.
 
 For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking directory.
 

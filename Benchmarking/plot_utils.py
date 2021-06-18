@@ -135,7 +135,7 @@ class count:
     def RMSE(self, raw, impute, scale = 'zscore'):
         if scale == 'zscore':
             raw = scale_z_score(raw)
-            impute = scale_plus(impute)
+            impute = scale_z_score(impute)
         else:
             print ('Please note you do not scale data by zscore')
         if raw.shape[1] == impute.shape[1]:
