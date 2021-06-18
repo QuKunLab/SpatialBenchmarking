@@ -78,14 +78,14 @@ class GenePrediction:
         self.outdir = outdir
     
     
-    def SpaGE_impute(self,args):
+    def SpaGE_impute(self):
         sys.path.append("FigureData/SpaGE-master/")
         from SpaGE.main import SpaGE
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
         RNA_data = RNA_data.loc[(RNA_data.sum(axis=1) != 0)]
         RNA_data = RNA_data.loc[(RNA_data.var(axis=1) != 0)]
-        train_list, test_list = args
+        train_list, test_list = self.train_list, self.test_list
         predict = test_list
         feature = train_list
         
@@ -97,19 +97,20 @@ class GenePrediction:
         Img_Genes = SpaGE(Spatial,RNA_data.T,n_pv=pv,genes_to_predict = predict)
         result = Img_Genes[predict]
         
-    return result
+        return result
     
-    def gimVI_impute(self,args):
+    def gimVI_impute(self):
         import scvi
         import scanpy as sc
         from scvi.model import GIMVI
         Spatial_data_adata = self.Spatial_data_adata
         RNA_data_adata = self.RNA_data_adata
-        train_list, test_list = args
-        Genes  = list(Spatial_data_adata.var_names)
+        train_list, test_list = self.train_list, self.test_list
+        Genes  = train_list.copy()
+        Genes.extend(test_list)
         rand_test_gene_idx = [Genes.index(x) for x in test_list]
         n_genes = len(Genes)
-        rand_train_gene_idx = sorted(set(range(n_genes)) - set(rand_test_gene_idx))
+        rand_train_gene_idx = [Genes.index(x) for x in train_list]
         rand_train_genes = np.array(Genes)[rand_train_gene_idx]
         rand_test_genes = np.array(Genes)[rand_test_gene_idx]
         spatial_data_partial = Spatial_data_adata[:, rand_train_genes]
@@ -119,7 +120,8 @@ class GenePrediction:
         
         seq_data = seq_data[:, Genes]
         sc.pp.filter_cells(seq_data, min_counts = 0)
-        
+        print (seq_data)
+        print (spatial_data_partial)
         scvi.data.setup_anndata(spatial_data_partial)
         scvi.data.setup_anndata(seq_data)
         
@@ -131,11 +133,11 @@ class GenePrediction:
         result = pd.DataFrame(imputed, columns=rand_test_genes)
         return result
     
-    def novoSpaRc_impute(self, args):
+    def novoSpaRc_impute(self):
         import novosparc as nc
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
-        train_list, test_list = args
+        train_list, test_list = self.train_list, self.test_list
         gene_names = np.array(RNA_data.index.values)
         dge = RNA_data.values
         dge = dge.T
@@ -153,7 +155,6 @@ class GenePrediction:
         insitu_matrix = np.array(Spatial_data[train_list])
         insitu_genes = np.array(Spatial_data[train_list].columns)
         test_genes = np.array(test_list)
-        test_matrix = np.array(Spatial_data[test_list])
         print (test_genes)
         print (insitu_genes)
         
@@ -172,11 +173,11 @@ class GenePrediction:
         result = result.T
         return result
     
-    def SpaOTsc_impute(self, args):
+    def SpaOTsc_impute(self):
         from spaotsc import SpaOTsc
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
-        train_list, test_list = args
+        train_list, test_list = self.train_list, self.test_list
         df_sc = RNA_data.T
         df_IS = Spatial_data
         pts = self.locations
@@ -208,14 +209,14 @@ class GenePrediction:
         result = pd.DataFrame(data=X_pred, columns=issc.sc_data.columns.values)
         test_genes = test_list
         result = result.loc[:,test_genes]
-    return result
+        return result
 
-    def Tangram_impute_image(self, args):
+    def Tangram_impute_image(self):
         sys.path.append("FigureData/Tangram-master/")
         import mapping.utils
         import mapping.mapping_optimizer
         import mapping.plot_utils
-        train_list, test_list = args
+        train_list, test_list = self.train_list, self.test_list
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0).T
         adata= sc.AnnData(RNA_data)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
@@ -235,18 +236,17 @@ class GenePrediction:
         G = np.array(space_data.X)
         d = np.full(G.shape[0], 1/G.shape[0])
         S = np.log(1+S)
-        mapper = mapping.mapping_optimizer.MapperConstrained(
-                                                             S=S, G=G, d=d, device=device, **hyperparm, target_count=G.shape[0])
-                                                             output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
-                                                             pre_gene = np.dot(adata[:, test_list].X.T, output)
-                                                             pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
+        mapper = mapping.mapping_optimizer.MapperConstrained(S=S, G=G, d=d, device=device, **hyperparm, target_count=G.shape[0])
+        output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
+        pre_gene = np.dot(adata[:, test_list].X.T, output)
+        pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
                                                              
         return pre_gene
     
-    def Tangram_impute_seq(self, args):
+    def Tangram_impute_seq(self):
         if self.device == 'GPU':
             device = torch.device('cuda:0')
-        train_list, test_list = args
+        train_list, test_list = self.train_list, self.test_list
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0).T
         adata= sc.AnnData(RNA_data)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
@@ -264,47 +264,46 @@ class GenePrediction:
         S = np.array(adata[:, gene_diff].X)
         G = np.array(space_data.X)
         d = np.array(space_data.obs.cell_count)/space_data.obs.cell_count.sum()
-        mapper = mapping.mapping_optimizer.MapperConstrained(
-                                                             S=S, G=G, d=d, device=device, **hyperparm, target_count = space_data.obs.cell_count.sum())
-                                                             output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
-                                                             pre_gene = np.dot(adata[:, test_list].X.T, output)
-                                                             pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
+        mapper = mapping.mapping_optimizer.MapperConstrained(S=S, G=G, d=d, device=device, **hyperparm, target_count = space_data.obs.cell_count.sum())
+        output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
+        pre_gene = np.dot(adata[:, test_list].X.T, output)
+        pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
                                                              
         return pre_gene
 
     def Imputing(self, need_tools):
         if "SpaGE" in need_tools:
-            result_SpaGE = self.SpaGE_impute(self.train_list, self.test_list)
+            result_SpaGE = self.SpaGE_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
             result_SpaGE.to_csv(self.outdir + "/result_SpaGE.csv",header=1, index=1)
                 
         if "gimVI" in need_tools:
-            result_GimVI = self.gimVI_impute(self.train_list, self.test_list)
+            result_GimVI = self.gimVI_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
             result_GimVI.to_csv(self.outdir + "result_gimVI.csv",header=1, index=1)
                 
         if "novoSpaRc" in need_tools:
-            result_Novosparc = self.novoSpaRc_impute(self.train_list, self.test_list)
+            result_Novosparc = self.novoSpaRc_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
             result_Novosparc.to_csv(self.outdir + "/result_novoSpaRc.csv",header=1, index=1)
                 
         if "SpaOTsc" in need_tools:
-            result_Spaotsc = self.SpaOTsc_impute(self.train_list, self.test_list)
+            result_Spaotsc = self.SpaOTsc_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_Spaotsc.to_csv(self.outdir + "/result_SpaoTSc.csv",header=1, index=1)
+            result_Spaotsc.to_csv(self.outdir + "/result_SpaOTsc.csv",header=1, index=1)
                 
         if "Tangram_image" in need_tools:
-            result_Tangram_image = self.Tangram_impute_image(self.train_list, self.test_list)
+            result_Tangram_image = self.Tangram_impute_image()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
             result_Tangram_image.to_csv(self.outdir + "/result_Tangram_image.csv",header=1, index=1)
                 
         if "Tangram_seq" in need_tools:
-            result_Tangram_seq = self.Tangram_impute_seq(self.train_list, self.test_list)
+            result_Tangram_seq = self.Tangram_impute_seq()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
             result_Tangram_seq.to_csv(self.outdir + "result_Tangram_seq.csv",header=1, index=1)
