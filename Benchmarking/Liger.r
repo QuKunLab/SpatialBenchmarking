@@ -1,5 +1,4 @@
 library(liger)
-library(Seurat)
 library("plyr")
 library('Matrix')
 Args<-commandArgs()
@@ -39,7 +38,7 @@ if (k>20){
 Ligerex.leaveout <- optimizeALS(Ligerex.leaveout,k = k, lambda = 20)
 Ligerex.leaveout <- quantile_norm(Ligerex.leaveout)
 Imputation <- imputeKNN(Ligerex.leaveout,reference = 'SMSC_RNA', queries = list('SMSC_FISH'), norm = FALSE, scale = FALSE, knn_k = 30)
-Result = as.data.frame(Imputation@raw.data$SMSC_FISH)[unlist(predict),]
+Result = as.matrix(Imputation@raw.data$SMSC_FISH)[unlist(predict),]
 write.table(Result,file = paste0(OutFile),sep='\t',quote=F,col.names = TRUE)
 #return (Result)
 warnings('off')
