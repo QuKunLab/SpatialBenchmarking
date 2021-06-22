@@ -8,7 +8,7 @@ We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate
 
 Dependencies and requirements
 
-Before you run the pipeline, please make sure that you have installed all the seven packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) :
+Before you run the pipeline, please make sure that you have installed and python3, R(3.6.1) and all the seven packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc) :
 1. Before the installation of these packages, please install Miniconda to manage all needed software and dependencies. You can download Miniconda from https://conda.io/miniconda.html.
 2. Download SpatialBenchmarking.zip from https://github.com/QuKunLab/SpatialBenchmarking. Unzipping this package and you will see Benchmarkingenvironment.yml located in its folder.
 3. Build isolated environment for SpatialBenchmarking: 
