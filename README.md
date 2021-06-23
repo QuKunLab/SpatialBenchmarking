@@ -15,16 +15,15 @@ Before you run the pipeline, please make sure that you have installed and python
 conda env create -f Benchmarkingenvironment.yml
 4. Activate Benchmarking environment:
 conda activate Benchmarking
-5. Enter R and install the SeuratV3.2.3 by command:
-remotes::install_version("Seurat", version = "3.2.3")
+5. Enter R and install required packages by command : install.packages(c('vctrs','rlang','htmlwidgets'))
 
-The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take several minutes to install the dependencies.
+The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
 
 Tutorial
 
-You can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results and figures in our paper.
+You can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results of figure2&4 in our paper.
 
-If you want to analysis your own data, the doc/Tutorial.pdf is a example showing how to use them to predict new spatial gene patterns and cell locations.
+If you want to analysis your own data, the doc/Tutorial.ipynb is a example showing how to use them to predict new spatial gene patterns and cell locations.
 
 For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking directory.
 

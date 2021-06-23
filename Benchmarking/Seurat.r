@@ -1,3 +1,4 @@
+options (warn = -1)
 library(Seurat)
 library(ggplot2)
 library('Matrix')
@@ -44,11 +45,10 @@ if ((length(features)-1)<30){
         DN = (length(features) -1)
 }
 
+options (warn = -1)
 anchors <- FindTransferAnchors(reference = RNA,query = Spatial,features = features,reduction = 'cca',reference.assay = 'RNA',query.assay = 'RNA', k.filter = NA, dims = 1:DN)
 
 refdata <- GetAssayData(object = RNA,assay = 'RNA',slot = 'data')
-
-print ('OK')
 
 imputation <- TransferData(anchorset = anchors,refdata = refdata,weight.reduction = 'pca',dims = 1:DN)
 

@@ -1,3 +1,4 @@
+options (warn = -1)
 library(liger)
 library("plyr")
 library('Matrix')
@@ -35,11 +36,12 @@ k = (length(Ligerex.leaveout@var.genes)-3)
 if (k>20){
     k = 20
 }
+options (warn = -1)
 Ligerex.leaveout <- optimizeALS(Ligerex.leaveout,k = k, lambda = 20)
 Ligerex.leaveout <- quantile_norm(Ligerex.leaveout)
+options (warn = -1)
 Imputation <- imputeKNN(Ligerex.leaveout,reference = 'SMSC_RNA', queries = list('SMSC_FISH'), norm = FALSE, scale = FALSE, knn_k = 30)
 Result = as.matrix(Imputation@raw.data$SMSC_FISH)[unlist(predict),]
 write.table(Result,file = paste0(OutFile),sep='\t',quote=F,col.names = TRUE)
-#return (Result)
-warnings('off')
+
 
