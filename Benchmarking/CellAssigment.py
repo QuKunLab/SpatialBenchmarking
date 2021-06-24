@@ -274,7 +274,7 @@ class MappingCell:
             seurat_results = seurat_results[CellType]
         seurat_results = (seurat_results.T/seurat_results.sum(axis=1)).T
         seurat_results = seurat_results.fillna(0)
-        seurat_results.to_csv(self.outdir + '/seurat_CellType_proportion.txt')
+        seurat_results.to_csv(self.outdir + '/Seurat_CellType_proportion.txt')
         
         
     def workstart(self,Tools):
