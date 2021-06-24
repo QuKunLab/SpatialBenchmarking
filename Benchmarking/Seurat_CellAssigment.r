@@ -1,5 +1,4 @@
 options (warn = -1)
-library(RcppCNPy)
 library(Seurat)
 library(dplyr)
 Args<-commandArgs()
