@@ -22,11 +22,11 @@ The package has been tested on Linux system (CentOS) and should work in any vali
 
 <font size=10>**Tutorial**</font>
 
-You can run the jupyter notebook of CellAssignment.ipynb and PredictGenes.ipynb to reproduce the results of figure2&4 in our paper.
+You can run the jupyter notebook of `CellAssignment.ipynb` and `PredictGenes.ipynb` to reproduce the results of figure2&4 in our paper.
 
-If you want to analysis your own data, the doc/Tutorial.ipynb is a example showing how to use them to predict new spatial gene patterns and cell locations.
+If you want to analysis your own data, the `doc/Tutorial.ipynb` is a example showing how to use them to predict new spatial gene patterns and cell locations.
 
-For more details, please see the SpatialGenes.py & CellAssigment.py in Benchmarking directory.
+For more details, please see the `SpatialGenes.py` & `CellAssigment.py` in Benchmarking directory.
 
 <font size=10>**Datasets**</font>
 
