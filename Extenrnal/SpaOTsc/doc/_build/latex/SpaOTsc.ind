@@ -1,0 +1,63 @@
+\begin{sphinxtheindex}
+\def\bigletter#1{{\Large\sffamily#1}\nopagebreak\vspace{1mm}}
+
+  \bigletter C
+  \item cell\_cell\_distance() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{4}
+  \item choose\_landmarks() (in module spaotsc.SpaOTsc), \hyperpage{1}
+  \item clustering() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{4}
+  \item compute\_mcc() (in module spaotsc.SpaOTsc), \hyperpage{1}
+
+  \indexspace
+  \bigletter D
+  \item discretize\_expression() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{5}
+
+  \indexspace
+  \bigletter G
+  \item gene\_clustering() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{5}
+  \item gene\_gene\_distance() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{5}
+  \item gene\_pair\_ml\_effect\_range() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{5}
+  \item gene\_pair\_pid\_effect\_range() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{6}
+
+  \indexspace
+  \bigletter I
+  \item infer\_signal\_range\_ml() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{7}
+
+  \indexspace
+  \bigletter K
+  \item knn\_graph() (in module spaotsc.SpaOTsc), \hyperpage{1}
+  \item knn\_graph\_nx() (in module spaotsc.SpaOTsc), \hyperpage{1}
+
+  \indexspace
+  \bigletter N
+  \item nonspatial\_correlation() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{7}
+
+  \indexspace
+  \bigletter P
+  \item phi\_exp() (in module spaotsc.SpaOTsc), \hyperpage{2}
+
+  \indexspace
+  \bigletter R
+  \item rank\_marker\_genes() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{7}
+
+  \indexspace
+  \bigletter S
+  \item sci() (in module spaotsc.SpaOTsc), \hyperpage{2}
+  \item spaotsc (module), \hyperpage{1}
+  \item spaotsc.SpaOTsc (module), \hyperpage{1}
+  \item spatial\_correlation() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{7}
+  \item spatial\_grn\_range() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{8}
+  \item spatial\_sc (class in spaotsc.SpaOTsc), \hyperpage{2}
+  \item spatial\_signaling\_ot() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{8}
+  \item spatial\_signaling\_ot\_singleligand() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{9}
+  \item spatial\_signaling\_scoring() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{9}
+
+  \indexspace
+  \bigletter T
+  \item transport\_plan() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{10}
+
+  \indexspace
+  \bigletter V
+  \item visualize\_cells() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{11}
+  \item visualize\_subclusters() (spaotsc.SpaOTsc.spatial\_sc method), \hyperpage{11}
+
+\end{sphinxtheindex}

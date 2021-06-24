@@ -1,0 +1,6 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}SpaOTsc API Reference}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}The SpaOTsc module}{1}{section.1.1}
+\contentsline {chapter}{\numberline {2}Indices and tables}{13}{chapter.2}
+\contentsline {chapter}{Python Module Index}{15}{section*.28}
+\contentsline {chapter}{Index}{17}{section*.29}

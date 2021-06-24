@@ -1,0 +1,814 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>SpaOTsc API Reference &#8212; SpaOTsc 0.2 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to SpaOTsc’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-spaotsc">
+<span id="spaotsc-api-reference"></span><h1>SpaOTsc API Reference<a class="headerlink" href="#module-spaotsc" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-spaotsc.SpaOTsc">
+<span id="the-spaotsc-module"></span><h2>The SpaOTsc module<a class="headerlink" href="#module-spaotsc.SpaOTsc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.choose_landmarks">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">choose_landmarks</code><span class="sig-paren">(</span><em>pts</em>, <em>n</em>, <em>dmat=None</em>, <em>method='maxmin'</em>, <em>assignment='nearest'</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.choose_landmarks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Choose a set of landmark points from a set of points.</p>
+<p>[1] De Silva, Vin, and Gunnar E. Carlsson. “Topological estimation using
+witness complexes.” SPBG 4 (2004): 157-166.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pts</strong> (class:<cite>numpy.ndarray</cite>) – coordinates of points (n_points, nD) needed if dmat not given</li>
+<li><strong>n</strong> (<em>int</em>) – number of landmark points to select</li>
+<li><strong>dmat</strong> (class:<cite>numpy.ndarray</cite>) – the distance matrix for the points (n_points, n_points)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the indices of selected points and an assignment matrix to assign original points to landmark points (n_landmarks, n_points)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.compute_mcc">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">compute_mcc</code><span class="sig-paren">(</span><em>true_labels</em>, <em>pred_labels</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.compute_mcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute matthew’s correlation coefficient.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>true_labels</strong> (class:<cite>numpy.ndarray</cite>) – 1D integer array</li>
+<li><strong>pred_labels</strong> (class:<cite>numpy.ndarray</cite>) – 1D integer array</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">mcc</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.knn_graph">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">knn_graph</code><span class="sig-paren">(</span><em>D</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.knn_graph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a k-nearest-neighbor graph as igraph object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> (class:<cite>numpy.ndarray</cite>) – a distance matrix for constructing the knn graph</li>
+<li><strong>k</strong> (<em>int</em>) – number of nearest neighbors</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a knn graph object</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>igraph.Graph</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.knn_graph_nx">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">knn_graph_nx</code><span class="sig-paren">(</span><em>D</em>, <em>k</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.knn_graph_nx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Construct a k-nearest-neighbor graph as networkx object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>D</strong> (class:<cite>numpy.ndarray</cite>) – a distance matrix for constructing the knn graph</li>
+<li><strong>k</strong> (<em>int</em>) – number of nearest neighbors</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a knn graph object and a list of edges</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>networkx.Graph</cite>, list of tuples</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.phi_exp">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">phi_exp</code><span class="sig-paren">(</span><em>x</em>, <em>eta</em>, <em>nu</em>, <em>p</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.phi_exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The exponential weight kernel. Computes exp(-(x/eta)^(p*nu)).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (float or class:<cite>numpy.ndarray</cite>) – the input value</li>
+<li><strong>eta</strong> (<em>float</em>) – the cutoff for this soft thresholding kernel</li>
+<li><strong>nu</strong> (<em>int</em>) – a possitive integer for the power term, a bigger nu gives sharper threshold boundary</li>
+<li><strong>p</strong> (<em>int</em>) – p=1: emphasize elements lower than cutoff; p=-1: emphasize elements higher than cutoff</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the kernel output with same shape of x</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">same as x</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="spaotsc.SpaOTsc.sci">
+<code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">sci</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>W</em>, <em>scale=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.sci" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the spatial correlation index in Eq. (9) of [1].</p>
+<p>[1] Chen, Yanguang. “A new methodology of spatial cross-correlation
+analysis.” PloS one 10.5 (2015): e0126158.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (class:<cite>numpy.ndarray</cite>) – the variable’s values at the spatial locations</li>
+<li><strong>y</strong> (class:<cite>numpy.ndarray</cite>) – the other variable’s values at the spatial locations</li>
+<li><strong>W</strong> (class:<cite>numpy.ndarray</cite>) – weight matrix (symmetric) among the locations with W[i,i] = 0</li>
+<li><strong>scale</strong> (<em>boolean</em>) – whether to scale the inputs s.t. (1) sum_{i,j}W_{ij} = 1 and (2) x = (x-mu(x))/sigma(x)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a global spatial cross correlation index</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">float</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="spaotsc.SpaOTsc.spatial_sc">
+<em class="property">class </em><code class="descclassname">spaotsc.SpaOTsc.</code><code class="descname">spatial_sc</code><span class="sig-paren">(</span><em>sc_data=None</em>, <em>is_data=None</em>, <em>sc_data_bin=None</em>, <em>is_data_bin=None</em>, <em>is_pos=None</em>, <em>is_dmat=None</em>, <em>sc_dmat=None</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object for connecting and analysis of spatial data and single-cell transcriptomics data.</p>
+<p>A minimal example usage:
+Assume we have (1) a pandas DataFrame for single-cell data <code class="docutils literal"><span class="pre">df_sc</span></code> with rows being cells and columns being genes
+(2) a numpy array for distance matrix among spatial locations <code class="docutils literal"><span class="pre">is_dmat</span></code>
+(3) a numpy array for dissimilarity between single-cell data and spatial data <code class="docutils literal"><span class="pre">cost_matrix</span></code>
+(4) a numpy array for dissimilarity matrix within single-cell data <code class="docutils literal"><span class="pre">sc_dmat</span></code></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">spaotsc</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spsc</span> <span class="o">=</span> <span class="n">spaotsc</span><span class="o">.</span><span class="n">SpaOTsc</span><span class="o">.</span><span class="n">spatial_sc</span><span class="p">(</span><span class="n">sc_data</span><span class="o">=</span><span class="n">df_sc</span><span class="p">,</span> <span class="n">is_dmat</span><span class="o">=</span><span class="n">is_dmat</span><span class="p">,</span> <span class="n">sc_dmat</span><span class="o">=</span><span class="n">sc_dmat</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spsc</span><span class="o">.</span><span class="n">transport_plan</span><span class="p">(</span><span class="n">cost_matrix</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spsc</span><span class="o">.</span><span class="n">cell_cell_distance</span><span class="p">(</span><span class="n">use_landmark</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spsc</span><span class="o">.</span><span class="n">clustering</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spsc</span><span class="o">.</span><span class="n">spatial_signaling_ot</span><span class="p">([</span><span class="s1">&#39;Wnt5&#39;</span><span class="p">],[</span><span class="s1">&#39;fz&#39;</span><span class="p">],</span><span class="n">DSgenes_up</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;CycD&#39;</span><span class="p">],</span><span class="n">DSgenes_down</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;dpp&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">signal_strengths</span><span class="p">,</span><span class="n">_</span><span class="o">=</span><span class="n">spsc</span><span class="o">.</span><span class="n">infer_signal_range_ml</span><span class="p">([</span><span class="s1">&#39;Wnt5&#39;</span><span class="p">],[</span><span class="s1">&#39;fz&#39;</span><span class="p">],[</span><span class="s1">&#39;CycD&#39;</span><span class="p">,</span><span class="s1">&#39;dpp&#39;</span><span class="p">],</span> <span class="n">effect_ranges</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">100</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">intercellular_grn</span><span class="o">=</span><span class="n">spsc</span><span class="o">.</span><span class="n">spatial_grn_range</span><span class="p">([</span><span class="s1">&#39;Wnt5&#39;</span><span class="p">,</span><span class="s1">&#39;fz&#39;</span><span class="p">,</span><span class="s1">&#39;CycD&#39;</span><span class="p">,</span><span class="s1">&#39;dpp&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sc_data</strong> (class:<cite>pandas.DataFrame</cite>) – single-cell data of size (n_cells, n_genes)</li>
+<li><strong>is_data</strong> (class:<cite>pandas.DataFrame</cite>) – spatial data of size (n_locations, n_genes)</li>
+<li><strong>sc_data_bin</strong> (class:<cite>pandas.DataFrame</cite>) – binarized single-cell data</li>
+<li><strong>is_data_bin</strong> (class:<cite>pandas.DataFrame</cite>) – binarized spatial data</li>
+<li><strong>is_pos</strong> (class:<cite>numpy.ndarray</cite>) – coordinates of spatial locations (n_locations, n_dimensions)</li>
+<li><strong>is_dmat</strong> (class:<cite>numpy.ndarray</cite>) – distance matrix for spatial locations (n_locations, n_locations)</li>
+<li><strong>sc_dmat</strong> (class:<cite>numpy.ndarray</cite>) – dissimilarity matrix for single-cell data (n_cells, n_cells)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>List of instance attributes:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Variables:</th><td class="field-body"><ul class="first last simple">
+<li><strong>sc_data</strong> (class:<cite>pandas.DataFrame</cite>) – single-cell data of size (n_cells, n_genes) <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>is_data</strong> (class:<cite>pandas.DataFrame</cite>) – spatial data of size (n_locations, n_genes) <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>sc_data_bin</strong> (class:<cite>pandas.DataFrame</cite>) – binarized single-cell data <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>is_data_bin</strong> (class:<cite>pandas.DataFrame</cite>) – binarized spatial data <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>is_pos</strong> (class:<cite>numpy.ndarray</cite>) – coordinates of spatial locations (n_locations, n_dimensions) <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>is_dmat</strong> (class:<cite>numpy.ndarray</cite>) – distance matrix for spatial locations (n_locations, n_locations) <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>sc_dmat</strong> (class:<cite>numpy.ndarray</cite>) – dissimilarity matrix for single-cell data (n_cells, n_cells) <code class="docutils literal"><span class="pre">__init__</span></code></li>
+<li><strong>gamma_mapping</strong> (class:<cite>numpy.ndarray</cite>) – the mapping matrix between single-cell data and spatial data (n_cells, n_locations) <code class="docutils literal"><span class="pre">transport_plan</span></code></li>
+<li><strong>sc_dmat_spatial</strong> (class:<cite>numpy.ndarray</cite>) – the spatial cell-cell distance for single-cell data (n_cells, n_cells) <code class="docutils literal"><span class="pre">cell_cell_distance</span></code></li>
+<li><strong>clustering_ncluster_org</strong> (<em>int</em>) – number of clusters in original clustering of single-cell data <code class="docutils literal"><span class="pre">clustering</span></code></li>
+<li><strong>clustering_nsubcluster</strong> (<em>list of int</em>) – number of cell spatial subclusters within each original cluster <code class="docutils literal"><span class="pre">clustering</span></code></li>
+<li><strong>clustering_partition_org</strong> (<em>list of numpy integer arrays</em>) – the cell indices for each original cluster <code class="docutils literal"><span class="pre">clustering</span></code></li>
+<li><strong>clustering_partition_inds</strong> (<em>dictionary</em>) – the cell indices for the cell spatial subclusters, e.g. the key (0,1) returns the cell indices for the second spatial subcluster within the first original cell cluster. <code class="docutils literal"><span class="pre">clustering</span></code></li>
+<li><strong>gene_cor_scc</strong> (class:<cite>pandas.DataFrame</cite>) – the intracellular spearmanr correlation between genes <code class="docutils literal"><span class="pre">nonspatial_correlation</span></code></li>
+<li><strong>gene_cor_is</strong> (class:<cite>pandas.DataFrame</cite>) – the intercellular spatial correlation between genes <code class="docutils literal"><span class="pre">spatial_correlation</span></code></li>
+<li><strong>g_bin_edges</strong> (<em>dictionary</em>) – the bin edges for the discretization of gene expressions with gene name string as dictionary key <code class="docutils literal"><span class="pre">discretize_expression</span></code></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.cell_cell_distance">
+<code class="descname">cell_cell_distance</code><span class="sig-paren">(</span><em>epsilon=0.01</em>, <em>rho=inf</em>, <em>scaling=True</em>, <em>sc_dmat_spatial=None</em>, <em>use_landmark=False</em>, <em>n_landmark=100</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.cell_cell_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute spatial distance between single cells using optimal transport.</p>
+<p>Generates: <cite>self.sc_dmat_spatial</cite>: (n_cell, n_cell) <cite>numpy.ndarray</cite></p>
+<p>Requires: <cite>self.gamma_mapping</cite>, <cite>self.is_dmat</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>epsilon</strong> (<em>float</em><em>, </em><em>defaults to 0.01</em>) – weight for entropy regularization term</li>
+<li><strong>rho</strong> (<em>float</em><em>, </em><em>defaults to inf</em>) – weight for KL divergence penalizing unbalanced transport</li>
+<li><strong>scaling</strong> (<em>boolean</em><em>, </em><em>defaults to True</em>) – whether to scale the cost_matrix (is_dmat) to avoid numerical overflow</li>
+<li><strong>sc_dmat_spatial</strong> (class:<cite>numpy.ndarray</cite>, optional) – the spatial distance matrix for single cells (n_cells, n_cells). If given, simply set the distance matrix without computing.</li>
+<li><strong>use_landmark</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether to use landmark points for computing transport distance.</li>
+<li><strong>n_landmark</strong> (<em>int</em><em>, </em><em>defaults to 100</em>) – number of landmark points to use if use_landmark</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(spatial) cell-cell distance matrix (n_cells, n_cells)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.clustering">
+<code class="descname">clustering</code><span class="sig-paren">(</span><em>genes=None</em>, <em>pca_n_components=None</em>, <em>res_sc=0.5</em>, <em>res_is=0.3</em>, <em>min_n=3</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.clustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clustering and spatial subclustering.</p>
+<p>Generates:</p>
+<p><cite>self.clustering_nsubcluster</cite>: list of int, numbers of subclusters in each cluster obtained in regular clustering of single-cell data</p>
+<p><cite>self.clustering_partition_inds</cite>: list of cell index arrays for clusters</p>
+<p><cite>self.clustering_partition_org</cite>: a dictionary for cell index arrays of spatial subclusters. The key (1,0) gives the first subcluster for the second cluster.</p>
+<p>Requires:</p>
+<p><cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>genes</strong> (<em>list</em>) – genes to use when clustering single-cell data. All genes in self.sc_data are used if not specified.</li>
+<li><strong>pca_n_components</strong> (<em>int</em>) – number of pca components when clustering single-cell data</li>
+<li><strong>res_sc</strong> (<em>float</em><em>, </em><em>defaults to 0.5</em>) – resolution parameter in louvain clustering for single-cell data</li>
+<li><strong>res_is</strong> (<em>float</em><em>, </em><em>defaults to 0.3</em>) – resolution parameter in louvain clustering for spatial subclustering of single-cel data</li>
+<li><strong>min_n</strong> (<em>int</em><em>, </em><em>defaults to 3</em>) – minimum number of members to be considered a cluster</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.discretize_expression">
+<code class="descname">discretize_expression</code><span class="sig-paren">(</span><em>genes=None</em>, <em>p0=1e-15</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.discretize_expression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Discretize gene expression using Bayesian blocks.</p>
+<p>Generate: <cite>self.g_bin_edges</cite>: a dictionary of block edges with gene names as keys</p>
+<p>Requires: <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>p0</strong> (<em>float</em><em>, </em><em>defaults to 1E-15</em>) – the p0 score in Bayesian blocks. A smaller p0 has lower tolerance of false rate, i.e. resulting in fewer blocks.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.gene_clustering">
+<code class="descname">gene_clustering</code><span class="sig-paren">(</span><em>gene_dmat</em>, <em>res=3</em>, <em>k=5</em>, <em>rng_seed=48823</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.gene_clustering" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cluster the genes based on their spatial pattern difference.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gene_dmat</strong> (class:<cite>numpy.ndarray</cite>) – the distance matrix  for genes (n_gene, n_gene)</li>
+<li><strong>res</strong> (<em>float</em><em>, </em><em>defaults to 3</em>) – resolution parameter used by louvain clustering, higher res gives more clusters</li>
+<li><strong>k</strong> (<em>int</em><em>, </em><em>defaults to 5</em>) – the k for knn graph fed to louvain algorithm</li>
+<li><strong>rng_seed</strong> (<em>int</em>) – random seed for louvain algorithm to get consistent results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a list of index vectors for the clusters</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of list of int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.gene_gene_distance">
+<code class="descname">gene_gene_distance</code><span class="sig-paren">(</span><em>genes=None</em>, <em>epsilon=0.01</em>, <em>rho=inf</em>, <em>scaling=True</em>, <em>sc_dmat_spatial=None</em>, <em>use_landmark=False</em>, <em>n_landmark=100</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.gene_gene_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute Wasserstein distance between gene expressions in scRNA-seq data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>genes</strong> (<em>list of str</em>) – the gene names to compute distance</li>
+<li><strong>epsilon</strong> (<em>float</em><em>, </em><em>defaults to 0.01</em>) – weight for entropy regularization term</li>
+<li><strong>rho</strong> (<em>float</em><em>, </em><em>defaults to inf</em>) – weight for KL divergence penalizing unbalanced transport</li>
+<li><strong>scaling</strong> (<em>boolean</em><em>, </em><em>defaults to True</em>) – whether to scale the cost matrix</li>
+<li><strong>sc_dmat_spatial</strong> (class:<cite>numpy.ndarray</cite>) – spatial distance matrix over the single cells</li>
+<li><strong>use_landmark</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether to use landmark points to accelarate computation</li>
+<li><strong>n_landmark</strong> (<em>int</em><em>, </em><em>defaults to 100</em>) – number of landmark genes to use</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">gene-gene distance matrix</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.gene_pair_ml_effect_range">
+<code class="descname">gene_pair_ml_effect_range</code><span class="sig-paren">(</span><em>gene_1</em>, <em>gene_2</em>, <em>background_genes=None</em>, <em>cor_cut=None</em>, <em>n_top_g=None</em>, <em>effect_ranges=None</em>, <em>method='Importance'</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.gene_pair_ml_effect_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deriving scores for intercellular gene regulation (how much effect does gene_1 in neiborhood have on gene_2) using random forest.</p>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite>, <cite>self.gene_cor_scc</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gene_1</strong> (<em>str</em>) – the name of source gene whose expression in the neighborhood will be examined</li>
+<li><strong>gene_2</strong> (<em>str</em>) – the name of target gene whose cellular expression will be used</li>
+<li><strong>background_genes</strong> (<em>list of str</em>) – a name list for gene that are correlated to gene_2</li>
+<li><strong>cor_cut</strong> (<em>float</em>) – the cut_off choosing background genes. used when background_genes is not specified</li>
+<li><strong>n_top_g</strong> (<em>int</em>) – the number of genes with highest correlation to gene_2 to be used as background_genes. used when both background_genes and cor_cut are not specified</li>
+<li><strong>effect_ranges</strong> (<em>list of float</em>) – list of spatial distances to consider</li>
+<li><strong>method</strong> (<em>str</em><em>, </em><em>defaults to 'Importance'</em>) – ‘Importance’: interpret the feature importance as regulation strength; ‘Prediction’: interpret prediction accuracy in cross-validation as regulation strength.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a (n_distance, 2) array with the first row recording the spatial distances examined and the second row being the effect strength</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.gene_pair_pid_effect_range">
+<code class="descname">gene_pair_pid_effect_range</code><span class="sig-paren">(</span><em>gene_1</em>, <em>gene_2</em>, <em>background_genes=None</em>, <em>cor_cut=None</em>, <em>n_top_g=None</em>, <em>effect_ranges=None</em>, <em>p0=1e-15</em>, <em>cell_id=None</em>, <em>output_individual=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.gene_pair_pid_effect_range" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The unique information provided by G1_nb (within various ranges) to</dt>
+<dd>G2 considering background genes Gi</dd>
+</dl>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite>, <cite>self.gene_cor_scc</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>gene_1</strong> (<em>str</em>) – the name of source gene whose expression in the neighborhood will be examined</li>
+<li><strong>gene_2</strong> (<em>str</em>) – the name of target gene whose cellular expression will be used</li>
+<li><strong>background_genes</strong> (<em>list of str</em>) – a name list for gene that are correlated to gene_2</li>
+<li><strong>cor_cut</strong> (<em>float</em>) – the cut_off choosing background genes. used when background_genes is not specified</li>
+<li><strong>n_top_g</strong> (<em>int</em>) – the number of genes with highest correlation to gene_2 to be used as background_genes. used when both background_genes and cor_cut are not specified</li>
+<li><strong>effect_ranges</strong> (<em>list of float</em>) – list of spatial distances to consider</li>
+<li><strong>p0</strong> (<em>float</em><em>, </em><em>defaults to 1E-15</em>) – the p0 score in Bayesian blocks. A smaller p0 has lower tolerance of false rate, i.e. resulting in fewer blocks.</li>
+<li><strong>output_individual</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – where to output the information computed with each background gene</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a (n_distance, 2) array with the first row recording the spatial distances examined and the second row being the effect strength</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.infer_signal_range_ml">
+<code class="descname">infer_signal_range_ml</code><span class="sig-paren">(</span><em>Lgenes</em>, <em>Rgenes</em>, <em>Dgenes</em>, <em>n_top_g=50</em>, <em>effect_ranges=None</em>, <em>method='Importance'</em>, <em>custom_dmat=None</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.infer_signal_range_ml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine spatial distance for given signaling using random forest.</p>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite>, <cite>self.gene_cor_scc</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Lgenes</strong> (<em>list of str</em>) – name list of ligand genes</li>
+<li><strong>Rgenes</strong> (<em>list of str</em>) – name list of receptor genes</li>
+<li><strong>Dgenes</strong> (<em>list of str</em>) – name list of downstream genes</li>
+<li><strong>n_top_g</strong> (<em>int</em><em>, </em><em>defaults to 50</em>) – number of background genes to use when building predictive model.</li>
+<li><strong>effect_ranges</strong> (<em>list of float</em>) – the spatial distances to examine</li>
+<li><strong>method</strong> (<em>str</em><em>, </em><em>defaults to 'Importance'</em>) – the way of interpreting likelihood for each spatial distance</li>
+<li><strong>custom_dmat</strong> (class:<cite>numpy.ndarray</cite>) – a cell-cell distance matrix given by user. <cite>self.sc_dmat_spatial</cite> is used if not given.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">(n_distance, 2) array for spatial distances (first row) and effect strengths (second row); and a (n_distance, n_DSgenes) array for the effect strength of each downstream genes.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">two class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.nonspatial_correlation">
+<code class="descname">nonspatial_correlation</code><span class="sig-paren">(</span><em>genes=None</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.nonspatial_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute gene-gene correlation matrix for pre-screening of genes.</p>
+<p>Generates: <cite>self.gene_cor_scc</cite></p>
+<p>Requires: self.sc_data`, <cite>self.sc_genes</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>genes</strong> (<em>list of str</em>) – list of gene names. If not specified, all genes in self.sc_data are used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.rank_marker_genes">
+<code class="descname">rank_marker_genes</code><span class="sig-paren">(</span><em>cid</em>, <em>genes=None</em>, <em>method='ranksum'</em>, <em>return_scores=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.rank_marker_genes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rank genes to identify markers for cell clusters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cid</strong> (class:<cite>numpy.1darray</cite>) – cell indices for the cluster</li>
+<li><strong>genes</strong> (<em>list</em>) – candidate genes to examine. If not specified, all genes are used.</li>
+<li><strong>method</strong> (<em>str</em><em>, </em><em>defaults to 'ranksum'</em>) – method to use. 1. ‘roc’, using auc-roc score to rank; 2. ‘ranksum’, using ranksum statistics.</li>
+<li><strong>return_scores</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether to return scores instead of sorted gene indices</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">sorted gene indices (if return_scores==False) or gene scores (if return_scores==True)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.1darray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.spatial_correlation">
+<code class="descname">spatial_correlation</code><span class="sig-paren">(</span><em>genes=None</em>, <em>effect_range=None</em>, <em>kernel='lorentz'</em>, <em>kernel_nu=10</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.spatial_correlation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes spatial correlation between genes for pre-screening.</p>
+<p>Generates: <cite>self.gene_cor_is</cite> pandas DataFrame</p>
+<p>Requires: <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>genes</strong> (<em>list of str</em>) – list of gene to examine</li>
+<li><strong>effect_range</strong> (<em>float</em>) – spatial distance</li>
+<li><strong>kernel</strong> (<em>str</em><em>, </em><em>defaults to 'lorentz'</em>) – type of kernels for weight matrix</li>
+<li><strong>kernel_nu</strong> (<em>int</em><em>, </em><em>defaults to 10</em>) – power for weight kernel</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.spatial_grn_range">
+<code class="descname">spatial_grn_range</code><span class="sig-paren">(</span><em>genes</em>, <em>effect_range=None</em>, <em>cor_cut=None</em>, <em>n_top_edge=None</em>, <em>cor_cut_bg=None</em>, <em>n_top_g_bg=None</em>, <em>method='pid'</em>, <em>p0=1e-15</em>, <em>output_individual=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.spatial_grn_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the spatial map for intercellular gene-gene regulatory information flow.</p>
+<p>Requires: <cite>self.sc_data</cite>, <cite>self.sc_dmat_spatial</cite>, <cite>self.gene_cor_scc</cite>, <cite>self.gene_cor_is</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>genes</strong> (<em>list of str</em>) – name list of genes to be examined</li>
+<li><strong>effect_range</strong> (<em>float</em>) – spatial distance for analyzing the intercellular processes</li>
+<li><strong>cor_cut</strong> (<em>float</em>) – the cutoff for spatial correlation between two genes for further examination (used if n_top_edge not specified)</li>
+<li><strong>n_top_edge</strong> (<em>int</em>) – the number of gene pairs to examine with highest spatial correlation</li>
+<li><strong>cor_cut_bg</strong> (<em>float</em>) – the cutoff for intracellular gene correlation to select background genes</li>
+<li><strong>n_top_g_bg</strong> (<em>int</em>) – the number of genes with highest intracellular gene correlation with the target gene to use as background genes (used if cor_cut_bg not specified)</li>
+<li><strong>p0</strong> (<em>float</em><em>, </em><em>defaults to 1E-15</em>) – the p0 value for Bayesian blocks (lower p0 gives fewer number of bins)</li>
+<li><strong>output_individual</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether to output the individual values computed with each background gene</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a data frame with rows being source genes and columns being target genes</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>pandas.DataFrame</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.spatial_signaling_ot">
+<code class="descname">spatial_signaling_ot</code><span class="sig-paren">(</span><em>Lgenes</em>, <em>Rgenes</em>, <em>Tgenes=[]</em>, <em>Rbgenes=[]</em>, <em>DSgenes_up=[]</em>, <em>DSgenes_down=[]</em>, <em>gene_bandwidth={}</em>, <em>effect_range=None</em>, <em>rho=10.0</em>, <em>epsilon=0.2</em>, <em>kernel_nu=5</em>, <em>use_kernel_ligand=False</em>, <em>use_kernel_receptor=False</em>, <em>return_weight_only=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.spatial_signaling_ot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate cell-cell signaling using optimal transport for a list of ligands and a list of receptors.</p>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Lgenes</strong> – name list of the ligand gene</li>
+<li><strong>Rgenes</strong> (<em>list of str</em>) – name list of receptor genes</li>
+<li><strong>Tgenes</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for transporters of ligands</li>
+<li><strong>Rbgenes</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for proteins bound to receptor for the receptor to work</li>
+<li><strong>DSgenes_up</strong> (<em>list of str</em>) – name list of up regulated genes by the ligand-receptor</li>
+<li><strong>DSgenes_down</strong> (<em>list of str</em>) – name list of down regulated genes by the ligand-receptor</li>
+<li><strong>gene_bandwidth</strong> (<em>dictionary</em><em> (</em><em>str to scalar</em><em>)</em><em>, </em><em>all outputs default to 1</em>) – the cutoffs for each gene to be considered expressed</li>
+<li><strong>effect_range</strong> (<em>float</em>) – spatial distance cutoff for the signaling</li>
+<li><strong>epsilon</strong> (<em>float</em><em>, </em><em>defaults to 0.2</em>) – weight for entropy regularization term</li>
+<li><strong>rho</strong> (<em>float</em><em>, </em><em>defaults to inf</em>) – weight for KL divergence penalizing unbalanced transport</li>
+<li><strong>kernel_nu</strong> (<em>float</em><em>, </em><em>defaults to 5</em>) – the power parameter for the exponential kernel, bigger nu means sharper soft cutoff</li>
+<li><strong>use_kernel_ligand</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether use kernel function to rescale ligand expression</li>
+<li><strong>use_kernel_receptor</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether use kernel function to rescale receptor expression</li>
+<li><strong>return_weight_only</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether to only return the weight for source distribution and destination distribution</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a scoring matrix for the given signaling genes (cells, cells), (i,j) entry is the score for cell i sending signals to cell j</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.spatial_signaling_ot_singleligand">
+<code class="descname">spatial_signaling_ot_singleligand</code><span class="sig-paren">(</span><em>Lgene</em>, <em>Rgene</em>, <em>Tgenes=None</em>, <em>Rbgene=None</em>, <em>DSgenes_up=None</em>, <em>DSgenes_down=None</em>, <em>effect_range=None</em>, <em>rho=10.0</em>, <em>epsilon=0.2</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.spatial_signaling_ot_singleligand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate cell-cell signaling using optimal transport for a single ligand.</p>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Lgene</strong> (<em>str</em>) – name of the ligand gene</li>
+<li><strong>Rgene</strong> (<em>list of str</em>) – name list of receptor genes</li>
+<li><strong>Tgenes</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for transporters of ligands</li>
+<li><strong>Rbgene</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for proteins bound to receptor for the receptor to work</li>
+<li><strong>DSgenes_up</strong> (<em>list of str</em>) – name list of up regulated genes by the ligand-receptor</li>
+<li><strong>DSgenes_down</strong> (<em>list of str</em>) – name list of down regulated genes by the ligand-receptor</li>
+<li><strong>effect_range</strong> (<em>float</em>) – spatial distance cutoff for the signaling</li>
+<li><strong>epsilon</strong> (<em>float</em><em>, </em><em>defaults to 0.2</em>) – weight for entropy regularization term</li>
+<li><strong>rho</strong> (<em>float</em><em>, </em><em>defaults to inf</em>) – weight for KL divergence penalizing unbalanced transport</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a scoring matrix for the given signaling genes (cells, cells), (i,j) entry is the score for cell i sending signals to cell j</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.spatial_signaling_scoring">
+<code class="descname">spatial_signaling_scoring</code><span class="sig-paren">(</span><em>Lgene</em>, <em>Rgene</em>, <em>Rbgene=None</em>, <em>Tgenes=None</em>, <em>DSgenes_up=None</em>, <em>DSgenes_down=None</em>, <em>effect_range=None</em>, <em>kernel='exp'</em>, <em>kernel_nu=5</em>, <em>gene_eta=None</em>, <em>penalty_type='addition'</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.spatial_signaling_scoring" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate cell-cell signaling using predefined scoring function.</p>
+<p>Requires: <cite>self.sc_dmat_spatial</cite>, <cite>self.sc_data</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Lgene</strong> (<em>str</em>) – name of the ligand gene</li>
+<li><strong>Rgene</strong> (<em>list of str</em>) – name list of receptor genes</li>
+<li><strong>Rbgene</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for proteins bound to receptor for the receptor to work</li>
+<li><strong>Tgenes</strong> (<em>list of str</em><em>, </em><em>optional</em>) – name list of genes for transporters of ligands</li>
+<li><strong>DSgenes_up</strong> (<em>list of str</em>) – name list of up regulated genes by the ligand-receptor</li>
+<li><strong>DSgenes_down</strong> (<em>list of str</em>) – name list of down regulated genes by the ligand-receptor</li>
+<li><strong>effect_range</strong> (<em>float</em>) – spatial distance cutoff for the signaling</li>
+<li><strong>kernel</strong> (<em>str</em><em>, </em><em>defaults to 'exp'</em>) – weight kernel to use for soft thresholding</li>
+<li><strong>kernel_nu</strong> (<em>float</em><em>, </em><em>defaults to 5</em>) – power for weight kernel, a higher power gives a shaper edge</li>
+<li><strong>gene_eta</strong> (<em>list of float</em><em>, </em><em>defaults to 1s</em>) – a list of threshold values for the downstream genes</li>
+<li><strong>penalty_type</strong> (<em>str</em><em>, </em><em>defaults to 'addition'</em>) – how to penalize inconsistency of downstream genes. ‘addition’: relaxed penalty; ‘multiplication’: strict penalty</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a scoring matrix for the given signaling genes (cells, cells), (i,j) entry is the score for cell i sending signals to cell j</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.transport_plan">
+<code class="descname">transport_plan</code><span class="sig-paren">(</span><em>cost_matrix</em>, <em>cor_matrix=None</em>, <em>alpha=0.1</em>, <em>epsilon=1.0</em>, <em>rho=100.0</em>, <em>G_sc=None</em>, <em>G_is=None</em>, <em>scaling=False</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.transport_plan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mapping between single cells and spatial data as transport plan.</p>
+<p>Generates: <cite>self.gamma_mapping</cite>: (n_cells, n_locations) <cite>numpy.ndarray</cite></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cost_matrix</strong> (class:<cite>numpy.ndarray</cite>) – dissimilarity matrix between single-cell data and spatial data (cells, locations)</li>
+<li><strong>cor_matrix</strong> (class:<cite>numpy.ndarray</cite>, optional) – similarity matrix between single-cell data and spatial data (cells, locations)</li>
+<li><strong>alpha</strong> (<em>float</em><em>, </em><em>[</em><em>0</em><em>,</em><em>1</em><em>]</em><em>, </em><em>defaults to 0.1</em>) – weight for structured part (Gromov-Wassertein loss term)</li>
+<li><strong>epsilon</strong> (<em>float</em><em>, </em><em>defaults to 1.0</em>) – weight for entropy regularization term</li>
+<li><strong>rho</strong> (<em>float</em><em>, </em><em>defaults to 100.0</em>) – weight for KL divergence penalizing unbalanced transport</li>
+<li><strong>G_sc</strong> (class:<cite>numpy.ndarray</cite>) – dissimilarity matrix within single-cell data (cells, cells)</li>
+<li><strong>G_is</strong> (class:<cite>numpy.ndarray</cite>) – distance matrix within spatial data (locations, locations)</li>
+<li><strong>scaling</strong> (<em>boolean</em><em>, </em><em>defaults to False</em>) – whether scale the cost_matrix to have max=1</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">a mapping between single-cell data and spatial data (cells, locations)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">class:<cite>numpy.ndarray</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.visualize_cells">
+<code class="descname">visualize_cells</code><span class="sig-paren">(</span><em>type=1</em>, <em>method='umap'</em>, <em>perplexity=30.0</em>, <em>umap_n_neighbors=5</em>, <em>umap_min_dist=0.1</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.visualize_cells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualization of cells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>type</strong> (<em>int</em>) – the type of visualization type=1 dimension reduction with spatial distance, label with original clusters;
+type=2 dimension reduction with scRNAseq, label with spatial subclusters;
+type=3 dimension reduction with spatial distance, label with spatial subclusters;
+type=4 dimension reduction with scRNAseq, label with original clusters.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="spaotsc.SpaOTsc.spatial_sc.visualize_subclusters">
+<code class="descname">visualize_subclusters</code><span class="sig-paren">(</span><em>pts=None</em>, <em>k=3</em>, <em>cut=None</em>, <em>vmin=0.005</em>, <em>vmax=0.03333333333333333</em>, <em>umap_k=3</em>, <em>figsize=(20</em>, <em>20)</em><span class="sig-paren">)</span><a class="headerlink" href="#spaotsc.SpaOTsc.spatial_sc.visualize_subclusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize subclusters as a summary and distributions over the original geometry (2D).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pts</strong> (class:<cite>numpy.ndarray</cite>) – the coordinates of original geometry (n_locations, 2)</li>
+<li><strong>k</strong> (<em>int</em>) – the number nearest neighbors to connect in the subcluster summary plot</li>
+<li><strong>vmin</strong> (<em>float</em>) – the vmin for colormap of the edges in the summary plot</li>
+<li><strong>vmax</strong> (<em>float</em>) – the vmax for colormap of the edges in the summary plot</li>
+<li><strong>umap_k</strong> (<em>int</em>) – the n_neighbors parameter in umap dimension reduction</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">SpaOTsc API Reference</a><ul>
+<li><a class="reference internal" href="#module-spaotsc.SpaOTsc">The SpaOTsc module</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to SpaOTsc’s documentation!</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Zixuan Cang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
