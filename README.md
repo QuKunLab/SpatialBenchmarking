@@ -12,10 +12,11 @@ Before you run the pipeline, please make sure that you have installed and python
 1. Before the installation of these packages, please install Miniconda to manage all needed software and dependencies. You can download Miniconda from https://conda.io/miniconda.html.
 2. Download SpatialBenchmarking.zip from https://github.com/QuKunLab/SpatialBenchmarking. Unzipping this package and you will see Benchmarkingenvironment.yml and Config.env.sh located in its folder.
 3. Build isolated environment for SpatialBenchmarking: 
-sh Config.env.sh
+conda env create -f Benchmarkingenvironment.yml
 4. Activate Benchmarking environment:
 conda activate Benchmarking
-5. Enter R and install required packages by command : install.packages(c('vctrs','rlang','htmlwidgets'))
+5. sh Config.env.sh
+6. Enter R and install required packages by command : install.packages(c('vctrs','rlang','htmlwidgets'))
 
 The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
 
