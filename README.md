@@ -2,7 +2,7 @@
 
 <img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/121383040-ba5fd300-c979-11eb-91ec-af017486f3c0.png">
 
-Implementation description
+<font size="6"><strong>Implementation description</strong></font size="6">
 
 We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate the accuracy of these integration methods for predicting the RNA spatial distribution. 2) Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. 3) Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of Tangram, Seurat, SpaOTsc, and novoSpaRc for assigning cell locations.
 
