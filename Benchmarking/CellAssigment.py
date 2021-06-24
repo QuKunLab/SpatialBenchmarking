@@ -189,7 +189,7 @@ class MappingCell:
         SpaOTsc_results.to_csv(self.outdir + '/SpaOTsc_CellType_proportion.txt')
 
     def Tangram(self,):
-        sys.path.append("FigureData/Tangram-master")
+        sys.path.append("Extenrnal/Tangram-master")
         import mapping.utils
         import mapping.mapping_optimizer
         import mapping.plot_utils

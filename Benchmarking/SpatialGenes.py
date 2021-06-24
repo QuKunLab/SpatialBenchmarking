@@ -79,7 +79,7 @@ class GenePrediction:
     
     
     def SpaGE_impute(self):
-        sys.path.append("FigureData/SpaGE-master/")
+        sys.path.append("Extenrnal/SpaGE-master/")
         from SpaGE.main import SpaGE
         RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
@@ -212,7 +212,7 @@ class GenePrediction:
         return result
 
     def Tangram_impute_image(self):
-        sys.path.append("FigureData/Tangram-master/")
+        sys.path.append("Extenrnal/Tangram-master/")
         import mapping.utils
         import mapping.mapping_optimizer
         import mapping.plot_utils
@@ -244,6 +244,10 @@ class GenePrediction:
         return pre_gene
     
     def Tangram_impute_seq(self):
+        sys.path.append("Extenrnal/Tangram-master/")
+        import mapping.utils
+        import mapping.mapping_optimizer
+        import mapping.plot_utils
         if self.device == 'GPU':
             device = torch.device('cuda:0')
         train_list, test_list = self.train_list, self.test_list
