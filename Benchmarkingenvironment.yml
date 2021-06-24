@@ -86,6 +86,7 @@ dependencies:
   - python=3.6.13
   - python-dateutil=2.8.1
   - python-igraph=0.9.1
+  - python-louvain=0.15
   - python_abi=3.6
   - r-abind=1.4_5
   - r-acepack=1.4.1
