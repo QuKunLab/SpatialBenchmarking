@@ -17,7 +17,7 @@ __Dependencies and requirements__
 `conda activate Benchmarking`
 5. `sh Config.env.sh`
 6. Enter R and install required packages by command : `install.packages(c('vctrs','rlang','htmlwidgets'))`
-The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
+  The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
 
 __Tutorial__
 
