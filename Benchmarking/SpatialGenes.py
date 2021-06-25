@@ -37,31 +37,56 @@ class GenePrediction:
     def __init__(self, RNA_path, Spatial_path, location_path, count_path = None, device = None, train_list = None, test_list = None, norm = 'count', outdir = None):
         """
             @author: wen zhang
-            This function integrates two single-cell datasets, spatial and scRNA-seq,
-            and predictes the expression of the spatially unmeasured genes from the scRNA-seq data.
+            This function integrates spatial and scRNA-seq data to predictes the expression of the spatially unmeasured genes from the scRNA-seq data.
+            
+            A minimal example usage:
+            Assume we have (1) scRNA-seq data count file named RNA_path
+            (2) spatial transcriptomics count data file named Spatial_path
+            (3) spatial spot coordinate file named location_path
+            (4) gene list for integrations names train_list
+            (5) gene list for prediction names test_list
+            
+            >>> import Benchmarking.SpatialGenes as SpatialGenes
+            >>> test = SpatialGenes.GenePrediction(RNA_path, Spatial_path, location_path, train_list = train_list, test_list = test_list, outdir = outdir)
+            >>> Methods = ['SpaGE','novoSpaRc','SpaOTsc','gimVI','Tangram_image','Seurat','LIGER']
+            >>> Result = test.Imputing(Methods)
             
             Parameters
             -------
             RNA_path : str
-            scRNA-seq data count file with Tab-delimited (cells X genes).
+            scRNA-seq data count file with Tab-delimited (genes X cells, each row is a gene and each col is a cell).
+            
             Spatial_path : str
-            spatial count data file with Tab-delimited, please note that the file has no index.
+            spatial transcriptomics count data file with Tab-delimited (spots X genes, each col is a gene. Please note that the file has no index).
+            
             location_path : str
-            spatial spot coordinate file name with Tab-delimited, please note that the file has no index.
+            spatial spot coordinate file name with Tab-delimited (each col is a spot coordinate. Please note that the file has no index).
+            default: None. It is necessary when you use SpaOTsc or novoSpaRc to integrate datasets.
+            
             count_path : str
-            Option,  you must prepared this file when you want to use Tangram (tangram_seq_impute)to prediction gene spatial distribution.
+            count files containing the number of cells in each spot for Tangram (spots X numbers).
+            each row represents the number of cells in each spot.
+            Please note that has no index and the file columns must be 'cell_counts'.
+            Option,  default: None. It is necessary when you use Tangram_seq functions to integrate datasets.
+            
+            
             device : str
             Option,  [None,'GPU'], defaults to None
+            
             train_list : list
-            genes for integrations, you can support more than one train list.
+            genes for integrations, Please note it must be a list.
+            
             test_list : list
-            genes for prediction, you can support more than one test list.
+            genes for prediction, Please note it must be a list.
+            
             norm : str
             Option,  ['count','norm'], defaults to count. if norm, Seurat and LIGER
             will normlize the  spatial and scRNA-seq data before intergration.
+            
             outdir : str
-            result file stored direction
+            Outfile directory
             """
+        
         self.RNA_file = RNA_path
         self.Spatial_file = Spatial_path
         self.locations = np.loadtxt(location_path, skiprows=1)
@@ -120,8 +145,6 @@ class GenePrediction:
         
         seq_data = seq_data[:, Genes]
         sc.pp.filter_cells(seq_data, min_counts = 0)
-        print (seq_data)
-        print (spatial_data_partial)
         scvi.data.setup_anndata(spatial_data_partial)
         scvi.data.setup_anndata(seq_data)
         
@@ -155,8 +178,6 @@ class GenePrediction:
         insitu_matrix = np.array(Spatial_data[train_list])
         insitu_genes = np.array(Spatial_data[train_list].columns)
         test_genes = np.array(test_list)
-        print (test_genes)
-        print (insitu_genes)
         
         markers_in_sc = np.array([], dtype='int')
         for marker in insitu_genes:

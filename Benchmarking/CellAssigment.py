@@ -39,35 +39,57 @@ import sys
 
 
 class MappingCell:
-    def __init__(self, RNA_path, Spatial_path, location_path = None, count_path = None, device = None, scrna_annotation = None, annotatetype = None, gd_result = None, outdir = None):
+    def __init__(self, RNA_path, Spatial_path, location_path = None, count_path = None, device = None, scrna_annotation = None, annotatetype = None, outdir = None):
+        
         """
         @author: wen zhang
-        This function integrates two single-cell datasets, spatial and scRNA-seq,
-        and assign cells to spatial locations in histological sections.
-            
+        This function integrates two datasets: spatial and scRNA-seq to assign cells to spatial locations in histological sections.
+        
+        A minimal example usage:
+        Assume we have (1) scRNA-seq data count file named scRNA
+        (2) spatial transcriptomics count data file named spatial_count
+        (3) spatial spot coordinate file named location
+        (4) count files containing the number of cells in each spot for Tangram named cell_counts
+        (5) scRNA data cell-type annotation file named scrna_meta
+        
+        >>> import Benchmarking.CellAssigment as CellAssigment
+        >>> MC = CellAssigment.MappingCell(RNA_path = scRNA, Spatial_path = spatial_count, location_path = location,count_path = cell_counts, scrna_annotation = scrna_meta, annotatetype = annotatetype, outdir = outdir)
+        >>> Tools = ['novoSpaRc','SpaOTsc','Seurat','Tangram']
+        >>> MC.workstart(Tools)
+        
         Parameters
         -------
         RNA_path : str
-        scRNA-seq data count file with Tab-delimited (cells X genes).
+        scRNA-seq data count file with Tab-delimited (genes X cells, each row is a gene and each col is a cell).
+        
         Spatial_path : str
-        spatial count data file with Tab-delimited, please note that the file has no index.
+        spatial transcriptomics count data file with Tab-delimited (spots X genes, each col is a gene. Please note that the file has no index).
+        
         location_path : str
-        spatial spot coordinate file name with Tab-delimited, please note that the file has no index.
+        spatial spot coordinate file with Tab-delimited (spots X coordinates, each col is a spot coordinates. Please note that the file has no index).
+        
         count_path : str
-        Option,  you must prepared this file when you want to use Tangram (tangram_seq_impute)to prediction gene spatial distribution.
+        count files containing the number of cells in each spot for Tangram. Option,  default: None.
+        It is necessary when you use Tangram to integrate datasets.(spots X numbers. each row is a spot index and each col is a cell).
+        Please note that the file columns must be 'cell_count'
+        
         device : str
         Option,  [None,'GPU'], defaults to None.
+        
         scrna_annotation : str
-        scRNA data cell-type annotation, please note this file must have two columns.
+        scRNA data cell-type annotation file (cells X celltype, each row is a cell and the col is cell annotation).
+        for one cell you may have different cell annotation type.
+        Please note that the file must have a columns named 'celltype'.
+        
         annotatetype : str
         In scrna_annotation file, which columns will be used.
-        gd_result : str
-        Option, each spot contain number of cell types as ground truth
+        
         outdir : str
-        result file stored direction
+        Outfile directory
         
         All the file and parameters can be found in Figure4 folds.
         """
+        
         self.RNA_path = RNA_path
         self.Spatial_path = Spatial_path
         self.RNA_data =  pd.read_csv(RNA_path, sep='\t', index_col = 0)
@@ -78,10 +100,6 @@ class MappingCell:
             self.count =pd.read_csv(count_path,sep='\t', index_col = 0).astype(int)
         self.scrna_annotationfiles = scrna_annotation
         self.scrna_annotation = pd.read_csv(scrna_annotation, sep='\t', header=0)
-        if gd_result != None:
-            self.gd =  pd.read_csv(gd_result, sep='\t', index_col = 0)
-        else:
-            self.gd = None
         self.annotatetype = annotatetype
         self.outdir = outdir
 
@@ -132,9 +150,6 @@ class MappingCell:
             else:
                 novoSpaRc_pro_results.loc[:,c] = novoSpaRc_results.loc[:,c].values
         novoSpaRc_results = novoSpaRc_pro_results
-        if self.gd is None:
-            CellType = novoSpaRc_results.columns & self.gd.columns
-            novoSpaRc_results = novoSpaRc_results[CellType]
         novoSpaRc_results = (novoSpaRc_results.T/novoSpaRc_results.sum(axis=1)).T
         novoSpaRc_results = novoSpaRc_results.fillna(0)
         novoSpaRc_results.to_csv(self.outdir + '/novoSpaRc_CellType_Proportion.txt')     
@@ -181,9 +196,6 @@ class MappingCell:
             else:
                 SpaOTsc_pro_results.loc[:,c] = SpaOTsc_results.loc[:,c].values
         SpaOTsc_results = SpaOTsc_pro_results
-        if self.gd is None:
-            CellType = SpaOTsc_results.columns & self.gd.columns
-            SpaOTsc_results = SpaOTsc_results[CellType]
         SpaOTsc_results = (SpaOTsc_results.T/SpaOTsc_results.sum(axis=1)).T
         SpaOTsc_results = SpaOTsc_results.fillna(0)
         SpaOTsc_results.to_csv(self.outdir + '/SpaOTsc_CellType_proportion.txt')
@@ -235,9 +247,6 @@ class MappingCell:
             else:
                 Tangram_pro_results.loc[:,c] = Tangram_results.loc[:,c].values
         Tangram_results = Tangram_pro_results
-        if self.gd is None:
-            CellType = Tangram_results.columns & self.gd.columns
-            Tangram_results = Tangram_results[CellType]
         Tangram_results = (Tangram_results.T/Tangram_results.sum(axis=1)).T
         Tangram_results = Tangram_results.fillna(0)
         Tangram_results.to_csv(self.outdir + '/Tangram_CellType_proportion.txt')
@@ -249,7 +258,6 @@ class MappingCell:
         print ('we use seurat to predict')
         os.system('Rscript Benchmarking/Seurat_CellAssigment.r ' + spatial_df + ' ' + rna_df + ' ' + self.scrna_annotationfiles + ' ' + self.annotatetype + ' ' + self.outdir)
         print ('Rscript Benchmarking/Seurat_CellAssigment.r ' + spatial_df + ' ' + rna_df + ' ' + self.scrna_annotationfiles + ' ' + self.annotatetype + ' ' + self.outdir)
-        #subprocess.run(['Rscript','Benchmarking/Seurat_CellAssigment.r',spatial_df,rna_df,self.scrna_annotationfiles,self.annotatetype,self.outdir])
         seurat_results = pd.read_csv(self.outdir + 'Seurat_alignment.txt', index_col=0)
         seurat_results = seurat_results.iloc[:,1:-1]
         Cols = seurat_results.columns
@@ -269,9 +277,6 @@ class MappingCell:
             else:
                 seurat_pro_results.loc[:,c] = seurat_results.loc[:,c].values
         seurat_results = seurat_pro_results
-        if self.gd is None:
-            CellType = seurat_results.columns & self.gd.columns
-            seurat_results = seurat_results[CellType]
         seurat_results = (seurat_results.T/seurat_results.sum(axis=1)).T
         seurat_results = seurat_results.fillna(0)
         seurat_results.to_csv(self.outdir + '/Seurat_CellType_proportion.txt')
