@@ -5,6 +5,7 @@
 __Implementation description__
 
   We collected 14 paired datasetsdesigned a pipeline to 1) systematically evaluate the accuracy of these integration methods for predicting the RNA spatial       distribution. 2) Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. 3) Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of Tangram, Seurat, SpaOTsc, and novoSpaRc for assigning cell locations.
+
       4) we provide example guidance to help researchers select optimal integration methods for working with their datasets:
          the [doc/Tutorial.pdf](https://github.com/QuKunLab/SpatialBenchmarking/blob/main/doc/Tutorial.pdf) is an example showing how to use them to predict new spatial gene patterns and cell locations.
 
@@ -28,6 +29,7 @@ __Tutorial__
   If you want to analysis your own data, the [doc/Tutorial.ipynb](https://github.com/QuKunLab/SpatialBenchmarking/blob/main/doc/Tutorial.ipynb) is an example showing how to use them to predict new spatial gene patterns and cell locations.
 
   You also can run the jupyter notebook of `CellAssignment.ipynb` and `PredictGenes.ipynb` to reproduce the results of figure2&4 in our paper.
+  
   For more details, please see the `SpatialGenes.py` & `CellAssigment.py` in Benchmarking directory.
 
 __Datasets__
