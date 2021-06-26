@@ -39,6 +39,9 @@ class GenePrediction:
             @author: wen zhang
             This function integrates spatial and scRNA-seq data to predictes the expression of the spatially unmeasured genes from the scRNA-seq data.
             
+            Please note that Tangram can be used in two ways : Tangram_image or Tangram_seq.
+            Only when  you have information file that containing the number of cells in each spot, you can use Tangram_seq.
+            
             A minimal example usage:
             Assume we have (1) scRNA-seq data count file named RNA_path
             (2) spatial transcriptomics count data file named Spatial_path

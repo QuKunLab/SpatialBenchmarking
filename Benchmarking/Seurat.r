@@ -53,7 +53,6 @@ refdata <- GetAssayData(object = RNA,assay = 'RNA',slot = 'data')
 imputation <- TransferData(anchorset = anchors,refdata = refdata,weight.reduction = 'pca',dims = 1:DN)
 
 options(warn = -1)
-print (test_genes)
 
 Imp_New_genes = as.data.frame(imputation@data)[test_genes,]
 

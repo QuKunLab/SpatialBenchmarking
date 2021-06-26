@@ -1,5 +1,7 @@
 ### please the vefity that you have installed the Seurat,SpaOTsc,Tangram,novoSpaRc
-### please  make sure you are in SpatialBenmarking dir and have prepared the data files
+### This scripts was used for calculating the accuracy of each integration methods in predicting cell locations.
+
+### Detail usages can be found in CellAssignment.ipynb.
 
 import numpy as np
 import pandas as pd
@@ -27,6 +29,26 @@ from scipy.stats import pearsonr,ttest_ind,mannwhitneyu
 import matplotlib
 
 def Simulated(spatial_rna, spatial_meta, spatial_loc, CoordinateXlable, CoordinateYlable, window, outdir):
+    
+    ### This was used for Simulating the low-resolution spatial data that cells type in each spot are known as reference
+    
+    """
+        Detail usages can be found in CellAssignment.ipynb
+        
+        
+        Parameters
+        -------
+        spatial_rna: spatial transcriptomics count data file with Tab-delimited (spots X genes, each col is a gene. Please note that the file has no index).
+        spatial_meta: spatial data cell-type annotation file
+        spatial_loc: spatial spot coordinate file with Tab-delimited (spots X coordinates, each col is a spot coordinates. Please note that the file has no index).
+        CoordinateXlable: The columns name of spatial spot coordinate file. (eg. 'X')
+        CoordinateYlable: The columns name of spatial spot coordinate file. (eg. 'Y')
+        window: int, window size
+        outdir: Outfile directory
+        
+    """
+    
+    
     if os.path.exists(outdir):
         print ('The output file is in ' + outdir)
     else:
@@ -65,6 +87,20 @@ def Simulated(spatial_rna, spatial_meta, spatial_loc, CoordinateXlable, Coordina
 
 
 def cal_ssim(im1,im2,M=1):
+    
+    """
+        calculate the SSIM value between two arrays.
+        Detail usages can be found in CellAssignment.ipynb
+        
+        
+        Parameters
+        -------
+        im1: array1, shape dimension = 2
+        im2: array2, shape dimension = 2
+        M: the max value in [im1, im2]
+        
+    """
+    
     im1, im2 = im1/im1.max(), im2/im2.max()
     mu1 = im1.mean()
     mu2 = im2.mean()
@@ -80,13 +116,37 @@ def cal_ssim(im1,im2,M=1):
     s12 = (sigma12 + C3)/(sigma1*sigma2 + C3)
     ssim = l12 * c12 * s12
     return ssim
+
 def rsme(x1,x2):
+    
+    ###This was used for calculating the RMSE value between two arrays.
+    
     x1 = st.zscore(x1)
     x2 = st.zscore(x2)
     return mean_squared_error(x1,x2,squared=False)
 
 
 def CalculateMetric(outdir,Methods,gd_celltype):
+    
+    ### This was used for calculating the accuracy of each integration methods in predicting cell locations.
+    ### Detail usages can be found in CellAssignment.ipynb.
+    
+    """
+        Parameters
+        -------
+        
+        outdir: str
+        predicted result file directory.
+        
+        Methods: list
+        choose tools you want to use. ['novoSpaRc','SpaOTsc','Seurat','Tangram']
+        
+        gd_celltype: str (eg: combined_spot_clusters.txt)
+        files that cells type in each spot are known as reference
+        
+    """
+    
+    
     data = []
     for Method in Methods:
         gd_results = pd.read_csv(gd_celltype,sep = '\t',index_col=0, header = 0)
