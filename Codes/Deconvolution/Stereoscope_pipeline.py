@@ -61,4 +61,4 @@ spatial_model = SpatialStereoscope.from_rna_model(st_adata, stereo_sc_model)
 spatial_model.train(max_epochs = 10000)
 spatial_model.history["elbo_train"][10:].plot()
 
-spatial_model.get_proportions().to_csv(output_path)
+spatial_model.get_proportions().to_csv(output_path + '/Stereoscope_result.txt')

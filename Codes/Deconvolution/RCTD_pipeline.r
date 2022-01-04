@@ -63,4 +63,4 @@ results <- myRCTD@results
 norm_weights = sweep(results$weights, 1, rowSums(results$weights), '/') 
 cell_type_names <- myRCTD@cell_type_info$info[[2]] #list of cell type names
 spatialRNA <- myRCTD@spatialRNA
-write.csv(norm_weights, output_path)
+write.csv(norm_weights, paste0(output_path, '/RCTD_result.txt'))

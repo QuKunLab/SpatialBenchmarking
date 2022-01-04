@@ -44,4 +44,4 @@ spotlight_ls <- spotlight_deconvolution(
   min_cont = 0 # Remove those cells contributing to a spot below a certain threshold 
   )
 decon_mtrx <- spotlight_ls[[2]]
-write.csv(decon_mtrx[,which(colnames(decon_mtrx) != "res_ss")],output_path)
+write.csv(decon_mtrx[,which(colnames(decon_mtrx) != "res_ss")], paste0(output_path, '/SPOTlight_result.txt'))

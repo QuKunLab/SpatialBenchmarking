@@ -55,4 +55,4 @@ for (i in unique(id)){
 }
 colnames(Sig_exp)<-unique(id)
 st_data <- runDWLSDeconv(st_data,sign_matrix = Sig_exp, n_cell = 20)
-write.csv(st_data@spatial_enrichment$DWLS,output_path)
+write.csv(st_data@spatial_enrichment$DWLS, paste0(output_path, '/Cell2locations_result.txt'))

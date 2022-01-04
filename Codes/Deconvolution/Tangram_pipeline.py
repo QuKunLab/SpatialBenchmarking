@@ -43,4 +43,4 @@ tg.project_cell_annotations(ad_map, ad_sp, annotation=celltype_key)
 celltype_density = ad_sp.obsm['tangram_ct_pred']
 celltype_density = (celltype_density.T/celltype_density.sum(axis=1)).T
 
-celltype_density.to_csv(output_file_path)
+celltype_density.to_csv(output_file_path + '/Tangram_result.txt')

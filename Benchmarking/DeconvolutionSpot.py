@@ -45,7 +45,7 @@ class Deconvolutions:
             celltype annotataion file
             
             output_path : str
-            Outfile file names
+            Outfile path
             
             """
         
