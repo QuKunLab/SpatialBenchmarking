@@ -12,7 +12,8 @@ and cell locations.
 
 
 __Dependencies and requirements for Predicting undetected transcripts__
-Before you run the pipeline, please make sure that you have installed and python3, R(3.6.1) and all the eight packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc, stPlus) :
+
+ Before you run the pipeline, please make sure that you have installed and python3, R(3.6.1) and all the eight packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc, stPlus) :
 1. Before the installation of these packages, please install Miniconda to manage all needed software and dependencies. You can download Miniconda from https://conda.io/miniconda.html.
 2. Download SpatialBenchmarking.zip from https://github.com/QuKunLab/SpatialBenchmarking. Unzipping this package and you will see Benchmarkingenvironment.yml and Config.env.sh located in its folder.
 3. Build isolated environment for SpatialBenchmarking: 
@@ -23,7 +24,8 @@ Before you run the pipeline, please make sure that you have installed and python
 6. Enter R and install required packages by command : `install.packages(c('vctrs','rlang','htmlwidgets'))`
 
 __Dependencies and requirements for Predicting celltypes deconvolution__
-Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
+
+ Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
 
 The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
 
