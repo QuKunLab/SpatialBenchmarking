@@ -1,6 +1,6 @@
 # Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution
 
-<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/121383040-ba5fd300-c979-11eb-91ec-af017486f3c0.png">
+<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/148057568-80af5a9e-cd1b-4f17-bf58-c92c2dd79307.jpg">
 
 __Implementation description__
 
@@ -23,6 +23,7 @@ __Dependencies and requirements__
 5. `sh Config.env.sh`
 6. Enter R and install required packages by command : `install.packages(c('vctrs','rlang','htmlwidgets'))`
 
+__Dependencies and requirements__
   Predicting celltypes deconvolution
   Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
 
@@ -32,7 +33,7 @@ __Tutorial__
 
   If you want to analysis your own data, the [doc/Tutorial.ipynb](https://github.com/QuKunLab/SpatialBenchmarking/blob/main/doc/Tutorial.ipynb) is an example showing how to use them to predict new spatial gene patterns and cell locations.
 
-  You also can run the jupyter notebook of `BLAST_CellType.ipynb` and `BLAST_GenePrediction.ipynb` to reproduce the results of figure2&4 in our paper.
+  You also can run the jupyter notebook of `BLAST_GenePrediction.ipynb` and `BLAST_CellType.ipynb` to reproduce the results of figure2&4 in our paper.
   
   For more details, please see the `SpatialGenes.py` & `Deconvolution.py` in Benchmarking directory.
 
