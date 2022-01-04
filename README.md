@@ -1,6 +1,6 @@
 # Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution
 
-<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/148057568-80af5a9e-cd1b-4f17-bf58-c92c2dd79307.jpg">
+<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/148059476-85236f14-03dd-4039-9587-2b5af19fe9c8.jpg">
 
 __Implementation description__
 
@@ -11,9 +11,8 @@ __Implementation description__
 and cell locations.
 
 
-__Dependencies and requirements__
-  Predicting undetected transcripts
-  Before you run the pipeline, please make sure that you have installed and python3, R(3.6.1) and all the eight packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc, stPlus) :
+__Dependencies and requirements for Predicting undetected transcripts__
+Before you run the pipeline, please make sure that you have installed and python3, R(3.6.1) and all the eight packages(gimVI, SpaGE, Tangram, Seurat, SpaOTsc, LIGER, novoSpaRc, stPlus) :
 1. Before the installation of these packages, please install Miniconda to manage all needed software and dependencies. You can download Miniconda from https://conda.io/miniconda.html.
 2. Download SpatialBenchmarking.zip from https://github.com/QuKunLab/SpatialBenchmarking. Unzipping this package and you will see Benchmarkingenvironment.yml and Config.env.sh located in its folder.
 3. Build isolated environment for SpatialBenchmarking: 
@@ -23,9 +22,8 @@ __Dependencies and requirements__
 5. `sh Config.env.sh`
 6. Enter R and install required packages by command : `install.packages(c('vctrs','rlang','htmlwidgets'))`
 
-__Dependencies and requirements__
-  Predicting celltypes deconvolution
-  Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
+__Dependencies and requirements for Predicting celltypes deconvolution__
+Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
 
 The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
 

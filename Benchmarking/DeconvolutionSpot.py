@@ -1,25 +1,5 @@
 import sys
 import os
-import scanpy as sc
-import numpy as np
-import pandas as pd
-import anndata
-import subprocess
-
-import scvi
-from scvi.external import RNAStereoscope, SpatialStereoscope
-from scvi.model import CondSCVI, DestVI
-import tangram as tg
-import cell2location
-import scvi
-
-import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from matplotlib import rcParams
-rcParams['pdf.fonttype'] = 42
-from scipy.sparse import csr_matrix
-from cell2location.utils.filtering import filter_genes
 
 class Deconvolutions:
     def __init__(self, RNA_file, RNA_h5ad, RNA_h5Seurat, Spatial_file, Spatial_h5ad, Spatial_h5Seurat, celltype_key, celltype_file, output_path):
@@ -33,8 +13,8 @@ class Deconvolutions:
             (3) celltype annotataion title in scRNA-seq data file
             
             >>> import Benchmarking.DeconvolutionSpot as DeconvolutionSpot
-            >>> test = DeconvolutionSpot.Deconvolutions(RNA_h5ad, RNA_h5Seurat, Spatial_h5ad, Spatial_h5Seurat, celltype_key, output_path)
-            >>> Methods = [Cell2location','SpatialDWLS','RCTD','STRIDE','Stereoscope','Tangram','DestVI', 'Seurat', 'SPOTlight', 'DSTG']
+            >>> test = DeconvolutionSpot.Deconvolutions(RNA_file, RNA_h5ad, RNA_h5Seurat, Spatial_file, Spatial_h5ad, Spatial_h5Seurat, celltype_key, celltype_file, output_path)
+            >>> Methods = ['Cell2location','SpatialDWLS','RCTD','STRIDE','Stereoscope','Tangram','DestVI', 'Seurat', 'SPOTlight', 'DSTG']
             >>> Result = test.Dencon(Methods)
             
             Parameters
