@@ -33,7 +33,7 @@ __Tutorial__
 
   If you want to analysis your own data, the [doc/Tutorial.ipynb](https://github.com/QuKunLab/SpatialBenchmarking/blob/main/doc/Tutorial.ipynb) is an example showing how to use them to predict new spatial gene patterns and cell locations.
 
-  You also can run the jupyter notebook of `BLAST_GenePrediction.ipynb` and `BLAST_CellType.ipynb` to reproduce the results of figure2&4 in our paper.
+  You also can run the jupyter notebook of `BLAST_GenePrediction.ipynb` and `BLAST_CelltypeDeconvolution.ipynb` to reproduce the results of figure2&4 in our paper.
   
   For more details, please see the `SpatialGenes.py` & `Deconvolution.py` in Benchmarking directory.
 
