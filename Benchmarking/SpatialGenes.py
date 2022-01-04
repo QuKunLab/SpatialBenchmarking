@@ -22,19 +22,17 @@ from scipy.spatial import distance_matrix
 from sklearn.metrics import matthews_corrcoef
 from scipy import stats
 
+from os.path import join
 
 from scipy.spatial.distance import cdist
 import h5py
 from scipy.stats import spearmanr
 
-
-import torch
-
-from torch.nn.functional import softmax, cosine_similarity, sigmoid
 import sys
+from stPlus import *
 
 class GenePrediction:
-    def __init__(self, RNA_path, Spatial_path, location_path, count_path = None, device = None, train_list = None, test_list = None, norm = 'count', outdir = None):
+    def __init__(self, RNA_path, Spatial_path, location_path, device = None, train_list = None, test_list = None, outdir = None, modes = 'cells', annotate = None, CellTypeAnnotate = None):
         """
             @author: wen zhang
             This function integrates spatial and scRNA-seq data to predictes the expression of the spatially unmeasured genes from the scRNA-seq data.
@@ -66,12 +64,6 @@ class GenePrediction:
             spatial spot coordinate file name with Tab-delimited (each col is a spot coordinate. Please note that the file has no index).
             default: None. It is necessary when you use SpaOTsc or novoSpaRc to integrate datasets.
             
-            count_path : str
-            count files containing the number of cells in each spot for Tangram (spots X numbers).
-            each row represents the number of cells in each spot.
-            Please note that has no index and the file columns must be 'cell_counts'.
-            Option,  default: None. It is necessary when you use Tangram_seq functions to integrate datasets.
-            
             
             device : str
             Option,  [None,'GPU'], defaults to None
@@ -82,12 +74,18 @@ class GenePrediction:
             test_list : list
             genes for prediction, Please note it must be a list.
             
-            norm : str
-            Option,  ['count','norm'], defaults to count. if norm, Seurat and LIGER
-            will normlize the  spatial and scRNA-seq data before intergration.
-            
             outdir : str
             Outfile directory
+            
+            modes : str
+            Only for Tangram. The default mapping mode is mode='cells',Alternatively, one can specify mode='clusters' which averages the single cells beloning to the same cluster (pass annotations via cluster_label). This is faster, and is our chioce when scRNAseq and spatial data come from different species 
+           
+            annoatet : str
+            annotate for scRNA-seq data, if not None, you must be set CellTypeAnnotate labels for tangram.
+            
+            CellTypeAnnotate : dataframe
+            CellType for scRNA-seq data, you can set this parameter for tangram.
+            
             """
         
         self.RNA_file = RNA_path
@@ -98,12 +96,10 @@ class GenePrediction:
         self.RNA_data_adata = sc.read(RNA_path, sep = "\t",first_column_names=True).T
         self.Spatial_data_adata = sc.read(Spatial_path, sep = "\t")
         self.device = device
-        self.norm = norm
-        print ('Please note you are using ' + self.norm + ' expression matrix to predict')
-        if count_path != None:
-            self.count =pd.read_table(count_path,sep='\t').astype(int)
-            self.count[self.count.cell_counts==0]=1
         self.outdir = outdir
+        self.annotate = annotate
+        self.CellTypeAnnotate = CellTypeAnnotate
+        self.modes = modes
     
     
     def SpaGE_impute(self):
@@ -116,11 +112,7 @@ class GenePrediction:
         train_list, test_list = self.train_list, self.test_list
         predict = test_list
         feature = train_list
-        
-        if (len(feature)) < 50:
-            pv = int(len(feature)-3)
-        else:
-            pv = 50
+        pv = int(len(feature)/2)
         Spatial = Spatial_data[feature]
         Img_Genes = SpaGE(Spatial,RNA_data.T,n_pv=pv,genes_to_predict = predict)
         result = Img_Genes[predict]
@@ -131,6 +123,8 @@ class GenePrediction:
         import scvi
         import scanpy as sc
         from scvi.model import GIMVI
+        import torch
+        from torch.nn.functional import softmax, cosine_similarity, sigmoid
         Spatial_data_adata = self.Spatial_data_adata
         RNA_data_adata = self.RNA_data_adata
         train_list, test_list = self.train_list, self.test_list
@@ -235,113 +229,95 @@ class GenePrediction:
         result = result.loc[:,test_genes]
         return result
 
-    def Tangram_impute_image(self):
-        sys.path.append("Extenrnal/Tangram-master/")
-        import mapping.utils
-        import mapping.mapping_optimizer
-        import mapping.plot_utils
+    def Tangram_impute(self):
+        import torch
+        from torch.nn.functional import softmax, cosine_similarity, sigmoid
+        import tangram as tg
+        RNA_data_adata = self.RNA_data_adata
+        Spatial_data_adata = self.Spatial_data_adata
         train_list, test_list = self.train_list, self.test_list
-        RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0).T
-        adata= sc.AnnData(RNA_data)
-        Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
-        device = self.device
-        if self.device == 'GPU':
-            device = torch.device('cuda:0')
-        hyperparm = {'lambda_d' : 1, 'lambda_g1' : 1, 'lambda_g2' : 0, 'lambda_r' : 0,
-            'lambda_count' : 1, 'lambda_f_reg' : 1}
-        learning_rate = 0.1
-        num_epochs = 1000
-        
-        gene_diff = train_list
-        spatial_data = Spatial_data[gene_diff]
-        space_data= sc.AnnData(spatial_data)
-        
-        S = np.array(adata[:, gene_diff] .X)
-        G = np.array(space_data.X)
-        d = np.full(G.shape[0], 1/G.shape[0])
-        S = np.log(1+S)
-        mapper = mapping.mapping_optimizer.MapperConstrained(S=S, G=G, d=d, device=device, **hyperparm, target_count=G.shape[0])
-        output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
-        pre_gene = np.dot(adata[:, test_list].X.T, output)
-        pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
-                                                             
+        test_list = [x.lower() for x in test_list]
+        if self.annotate == None:
+            RNA_data_adata_label = RNA_data_adata
+            sc.pp.normalize_total(RNA_data_adata_label)
+            sc.pp.log1p(RNA_data_adata_label)
+            sc.pp.highly_variable_genes(RNA_data_adata_label)
+            RNA_data_adata_label = RNA_data_adata_label[:, RNA_data_adata_label.var.highly_variable]
+            sc.pp.scale(RNA_data_adata_label, max_value=10)
+            sc.tl.pca(RNA_data_adata_label)
+            sc.pp.neighbors(RNA_data_adata_label)
+            sc.tl.leiden(RNA_data_adata_label, resolution = 0.5)
+            RNA_data_adata.obs['leiden']  = RNA_data_adata_label.obs.leiden
+            tg.pp_adatas(RNA_data_adata, Spatial_data_adata, genes=train_list)
+        else:
+            CellTypeAnnotate = self.CellTypeAnnotate
+            RNA_data_adata.obs['leiden']  = CellTypeAnnotate
+            tg.pp_adatas(RNA_data_adata, Spatial_data_adata, genes=train_list)
+        device = torch.device('cuda:0')
+        if self.modes == 'clusters':
+            ad_map = tg.map_cells_to_space(RNA_data_adata, Spatial_data_adata, device = device, mode = modes, cluster_label = 'leiden', density_prior = density)
+            ad_ge = tg.project_genes(ad_map, RNA_data_adata, cluster_label = 'leiden')
+        else:
+            ad_map = tg.map_cells_to_space(RNA_data_adata, Spatial_data_adata, device = device)
+            ad_ge = tg.project_genes(ad_map, RNA_data_adata)
+        test_list = list(set(ad_ge.var_names) & set(test_list))
+        test_list = np.array(test_list)
+        pre_gene = pd.DataFrame(ad_ge[:,test_list].X, index=ad_ge[:,test_list].obs_names, columns=ad_ge[:,test_list].var_names)
         return pre_gene
     
-    def Tangram_impute_seq(self):
-        sys.path.append("Extenrnal/Tangram-master/")
-        import mapping.utils
-        import mapping.mapping_optimizer
-        import mapping.plot_utils
-        if self.device == 'GPU':
-            device = torch.device('cuda:0')
-        train_list, test_list = self.train_list, self.test_list
-        RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0).T
-        adata= sc.AnnData(RNA_data)
+    def stPlus_impute(self):
+        outdir, train_list, test_list = self.outdir, self.train_list, self.test_list
+        RNA_data = pd.read_table(self.RNA_file,header=0,index_col = 0)
         Spatial_data = pd.read_table(self.Spatial_file,sep='\t',header=0)
-        device = self.device
-        hyperparm = {'lambda_d' : 1, 'lambda_g1' : 1, 'lambda_g2' : 0, 'lambda_r' : 0,
-            'lambda_count' : 1, 'lambda_f_reg' : 1}
-        learning_rate = 0.1
-        num_epochs = 6000
-        
-        gene_diff = train_list
-        spatial_data = Spatial_data[gene_diff]
-        space_data = sc.AnnData(spatial_data)
-        space_data.obs['cell_count'] = self.count.cell_counts.values
-        
-        S = np.array(adata[:, gene_diff].X)
-        G = np.array(space_data.X)
-        d = np.array(space_data.obs.cell_count)/space_data.obs.cell_count.sum()
-        mapper = mapping.mapping_optimizer.MapperConstrained(S=S, G=G, d=d, device=device, **hyperparm, target_count = space_data.obs.cell_count.sum())
-        output, F_out = mapper.train(learning_rate=learning_rate, num_epochs=num_epochs)
-        pre_gene = np.dot(adata[:, test_list].X.T, output)
-        pre_gene =pd.DataFrame(pre_gene,index=test_list,columns=space_data.obs_names).T
-                                                             
-        return pre_gene
+        save_path_prefix = join(outdir, 'process_file/stPlus-demo')
+        if not os.path.exists(join(outdir, "process_file")):
+            os.mkdir(join(outdir, "process_file"))
+        stPlus_res = stPlus(Spatial_data[train_list], RNA_data.T, test_list, save_path_prefix)
+        return stPlus_res
 
     def Imputing(self, need_tools):
         if "SpaGE" in need_tools:
             result_SpaGE = self.SpaGE_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_SpaGE.to_csv(self.outdir + "/result_SpaGE.csv",header=1, index=1)
+            result_SpaGE.to_csv(self.outdir + "/SpaGE_impute.csv",header=1, index=1)
                 
         if "gimVI" in need_tools:
             result_GimVI = self.gimVI_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_GimVI.to_csv(self.outdir + "result_gimVI.csv",header=1, index=1)
+            result_GimVI.to_csv(self.outdir + "gimVI_impute.csv",header=1, index=1)
                 
         if "novoSpaRc" in need_tools:
             result_Novosparc = self.novoSpaRc_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_Novosparc.to_csv(self.outdir + "/result_novoSpaRc.csv",header=1, index=1)
+            result_Novosparc.to_csv(self.outdir + "/novoSpaRc_impute.csv",header=1, index=1)
                 
         if "SpaOTsc" in need_tools:
             result_Spaotsc = self.SpaOTsc_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_Spaotsc.to_csv(self.outdir + "/result_SpaOTsc.csv",header=1, index=1)
-                
-        if "Tangram_image" in need_tools:
-            result_Tangram_image = self.Tangram_impute_image()
+            result_Spaotsc.to_csv(self.outdir + "/SpaOTsc_impute.csv",header=1, index=1)
+
+        if "Tangram" in need_tools:
+            result_Tangram = self.Tangram_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_Tangram_image.to_csv(self.outdir + "/result_Tangram_image.csv",header=1, index=1)
+            result_Tangram.to_csv(self.outdir + "/Tangram_impute.csv",header=1, index=1)
                 
-        if "Tangram_seq" in need_tools:
-            result_Tangram_seq = self.Tangram_impute_seq()
+        if "stPlus" in need_tools:
+            result_stPlus = self.stPlus_impute()
             if not os.path.exists(self.outdir):
                 os.mkdir(self.outdir)
-            result_Tangram_seq.to_csv(self.outdir + "result_Tangram_seq.csv",header=1, index=1)
+            result_stPlus.to_csv(self.outdir + "stPlus_impute.csv",header=1, index=1)
 
         if 'LIGER' in need_tools:
             train = ','.join(self.train_list)
             test = ','.join(self.test_list)
-            os.system('Rscript Benchmarking/Liger.r ' + self.RNA_file + ' ' + self.Spatial_file + ' ' + train + ' ' + test + ' ' + self.norm  + ' ' + self.outdir + '/Result_LIGER.txt')
+            os.system('Rscript Codes/Impute/LIGER.r ' + self.RNA_file + ' ' + self.Spatial_file + ' ' + train + ' ' + test + ' ' + self.outdir + '/LIGER_impute.txt')
 
         if 'Seurat' in need_tools:
             train = ','.join(self.train_list)
             test = ','.join(self.test_list)
-            os.system ('Rscript Benchmarking/Seurat.r ' + self.RNA_file + ' ' + self.Spatial_file + ' ' + train + ' ' + test + ' ' + self.norm + ' ' + self.outdir + '/Result_Seurat_.txt')
+            os.system ('Rscript Codes/Impute/Seurat.r ' + self.RNA_file + ' ' + self.Spatial_file + ' ' + train + ' ' + test + ' ' + self.outdir + '/Seurat_impute.txt')
