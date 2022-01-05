@@ -6,8 +6,7 @@ scrna_path = args[1]
 spatial_path = args[2]
 celltype_final = args[3]
 output_path = args[4]
-
-my_python_path = "~/miniconda3/envs/cellpymc/bin/python"
+my_python_path = args[5]
 instrs = createGiottoInstructions(python_path = my_python_path)
 sc <- LoadH5Seurat(scrna_path)
 st <- LoadH5Seurat(spatial_path)
@@ -55,4 +54,4 @@ for (i in unique(id)){
 }
 colnames(Sig_exp)<-unique(id)
 st_data <- runDWLSDeconv(st_data,sign_matrix = Sig_exp, n_cell = 20)
-write.csv(st_data@spatial_enrichment$DWLS, paste0(output_path, '/Cell2locations_result.txt'))
+write.csv(st_data@spatial_enrichment$DWLS, paste0(output_path, '/SpatialDWLS_result.txt'))
