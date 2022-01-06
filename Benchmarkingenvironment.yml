@@ -275,7 +275,6 @@ dependencies:
   - zlib=1.2.11
   - zstd=1.4.9
   - pip:
-    - alabaster==0.7.12
     - anndata==0.7.6
     - argon2-cffi==20.1.0
     - async-generator==1.10
@@ -366,5 +365,5 @@ dependencies:
     - webencodings==0.5.1
     - widgetsnbextension==3.5.1
     - xlrd==1.2.0
-    - stPlus==0.06
+    - stPlus==0.0.6
     - tangram-sc==1.0.0
