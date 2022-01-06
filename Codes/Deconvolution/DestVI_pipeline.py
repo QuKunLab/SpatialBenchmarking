@@ -7,12 +7,7 @@ from scvi.model import CondSCVI, DestVI
 
 import sys
 import os
-def get_freer_gpu():
-    os.system('nvidia-smi -q -d Memory |grep -A4 GPU|grep Free >tmp')
-    memory_available = [int(x.split()[2]) for x in open('tmp', 'r').readlines()]
-    max_idx = np.where(memory_available == np.max(memory_available))[0]
-    return np.random.permutation(max_idx)[0]
-os.environ['CUDA_VISIBLE_DEVICES'] = str(get_freer_gpu())
+
 
 scrna_path = sys.argv[1]
 spatial_path = sys.argv[2]

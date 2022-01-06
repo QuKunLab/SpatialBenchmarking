@@ -8,13 +8,6 @@ import matplotlib as mpl
 import subprocess
 
 import os
-np.random.seed()
-def get_freer_gpu():
-    out = subprocess.getoutput('nvidia-smi -q -d Memory |grep -A4 GPU|grep Free')
-    memory_available = [int(x.split()[2]) for x in out.split('\n')]
-    max_idx = np.where(memory_available == np.max(memory_available))[0]
-    return np.random.permutation(max_idx)[0]
-os.environ['CUDA_VISIBLE_DEVICES'] = str(get_freer_gpu())
 
 import cell2location
 import scvi

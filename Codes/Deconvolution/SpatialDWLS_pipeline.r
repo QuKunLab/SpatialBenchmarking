@@ -6,7 +6,8 @@ scrna_path = args[1]
 spatial_path = args[2]
 celltype_final = args[3]
 output_path = args[4]
-my_python_path = args[5]
+
+my_python_path = "~/miniconda3/envs/cellpymc/bin/python"
 instrs = createGiottoInstructions(python_path = my_python_path)
 sc <- LoadH5Seurat(scrna_path)
 st <- LoadH5Seurat(spatial_path)

@@ -1,4 +1,4 @@
-name: Benchmarking
+name: BenchmarkingUpdate
 channels:
   - r
   - bioconda
@@ -9,6 +9,7 @@ dependencies:
   - _openmp_mutex=4.5
   - _r-mutex=1.0.0
   - arpack=3.7.0
+  - alabaster=0.7.12
   - binutils_impl_linux-64=2.33.1
   - binutils_linux-64=2.33.1
   - bwidget=1.9.11
