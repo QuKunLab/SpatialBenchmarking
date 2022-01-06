@@ -66,7 +66,7 @@ class Deconvolutions:
     def Dencon(self, need_tools):
         if "Cell2location" in need_tools:
             RNA_h5ad = self.RNA_h5ad
-            Spatial_h5ad = self.RNA_h5ad
+            Spatial_h5ad = self.Spatial_h5ad
             celltype_key = self.celltype_key
             output_path = self.output_path
             python_path = self.python_path
@@ -74,63 +74,63 @@ class Deconvolutions:
 
         if "SpatialDWLS" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
-            Spatial_h5Seurat = self.RNA_h5Seurat
+            Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('Rscript Codes/Deconvolution/SpatialDWLS_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
 
         if "RCTD" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
-            Spatial_h5Seurat = self.RNA_h5Seurat
+            Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('Rscript Codes/Deconvolution/RCTD_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
 
         if "STRIDE" in need_tools:
             RNA_file = self.RNA_file
-            Spatial_file = self.RNA_file
+            Spatial_file = self.Spatial_file
             celltype_file = self.celltype_file
             output_path = self.output_path
             os.system('sh Codes/Deconvolution/STRIDE_pipeline.sh ' + RNA_file + ' ' + Spatial_file + ' ' + celltype_file + ' ' + output_path)
 
         if "Stereoscope" in need_tools:
             RNA_h5ad = self.RNA_h5ad
-            Spatial_h5ad = self.RNA_h5ad
+            Spatial_h5ad = self.Spatial_h5ad
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('python Codes/Deconvolution/Stereoscope_pipeline.py ' + RNA_h5ad + ' ' + Spatial_h5ad + ' ' + celltype_key + ' ' + output_path)
 
         if "Tangram" in need_tools:
             RNA_h5ad = self.RNA_h5ad
-            Spatial_h5ad = self.RNA_h5ad
+            Spatial_h5ad = self.Spatial_h5ad
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('python Codes/Deconvolution/Tangram_pipeline.py ' + RNA_h5ad + ' ' + Spatial_h5ad + ' ' + celltype_key + ' ' + output_path)
 
         if "DestVI" in need_tools:
             RNA_h5ad = self.RNA_h5ad
-            Spatial_h5ad = self.RNA_h5ad
+            Spatial_h5ad = self.Spatial_h5ad
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('python Codes/Deconvolution/DestVI_pipeline.py ' + RNA_h5ad + ' ' + Spatial_h5ad + ' ' + celltype_key + ' ' + output_path)
 
         if "Seurat" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
-            Spatial_h5Seurat = self.RNA_h5Seurat
+            Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('Rscript Codes/Deconvolution/Seurat_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
 
         if "SPOTlight" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
-            Spatial_h5Seurat = self.RNA_h5Seurat
+            Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('Rscript Codes/Deconvolution/SPOTlight_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
 
         if "DSTG" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
-            Spatial_h5Seurat = self.RNA_h5Seurat
+            Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
             os.system('Rscript Codes/Deconvolution/DSTG_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
