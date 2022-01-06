@@ -77,7 +77,8 @@ class Deconvolutions:
             Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
-            os.system('Rscript Codes/Deconvolution/SpatialDWLS_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path)
+            python_path = self.python_path
+            os.system('Rscript Codes/Deconvolution/SpatialDWLS_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path + ' ' + python_path)
 
         if "RCTD" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
