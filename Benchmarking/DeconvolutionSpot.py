@@ -2,7 +2,7 @@ import sys
 import os
 
 class Deconvolutions:
-    def __init__(self, RNA_file = None, RNA_h5ad = None, RNA_h5Seurat = None, Spatial_file = None, Spatial_h5ad = None, Spatial_h5Seurat = None, celltype_key = None, celltype_file = None, python_path, output_path = None):
+    def __init__(self, RNA_file = None, RNA_h5ad = None, RNA_h5Seurat = None, Spatial_file = None, Spatial_h5ad = None, Spatial_h5Seurat = None, celltype_key = None, celltype_file = None, my_python_path, output_path = None):
         """
             @author: wen zhang
             This function integrates spatial and scRNA-seq data to predictes the celltype deconvolution of the spots.
@@ -44,7 +44,7 @@ class Deconvolutions:
             celltype_file : str
             celltype annotataion file
             
-            python_path : str
+            my_python_path : str
             which python path used for Cell2location
             
             output_path : str
@@ -60,7 +60,7 @@ class Deconvolutions:
         self.Spatial_h5Seurat = Spatial_h5Seurat
         self.celltype_key = celltype_key
         self.celltype_file = celltype_file
-        self.python_path = python_path
+        self.my_python_path = my_python_path
         self.output_path = output_path
     
     def Dencon(self, need_tools):
@@ -77,8 +77,8 @@ class Deconvolutions:
             Spatial_h5Seurat = self.Spatial_h5Seurat
             celltype_key = self.celltype_key
             output_path = self.output_path
-            python_path = self.python_path
-            os.system('Rscript Codes/Deconvolution/SpatialDWLS_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path + ' ' + python_path)
+            my_python_path = self.my_python_path
+            os.system('Rscript Codes/Deconvolution/SpatialDWLS_pipeline.r ' + RNA_h5Seurat + ' ' + Spatial_h5Seurat + ' ' + celltype_key + ' ' + output_path + ' ' + my_python_path)
 
         if "RCTD" in need_tools:
             RNA_h5Seurat = self.RNA_h5Seurat
