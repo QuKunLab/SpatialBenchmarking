@@ -6,7 +6,7 @@ output_path=$4
 dir_path=`dirname $scrna_path`
 dataset=`echo $dir_path | rev | cut -d/ -f1 | rev`
 celltype_path=`echo $celltype_key`
-prefix = 'STRIDE'
+prefix='STRIDE'
 echo $dataset
 echo $celltype_path
 STRIDE deconvolve --sc-count $scrna_path \
