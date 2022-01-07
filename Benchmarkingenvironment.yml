@@ -1,4 +1,4 @@
-name: BenchmarkingUpdate
+name: Benchmarking
 channels:
   - r
   - bioconda
