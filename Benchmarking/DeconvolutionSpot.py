@@ -2,7 +2,7 @@ import sys
 import os
 
 class Deconvolutions:
-    def __init__(self, RNA_file = None, RNA_h5ad = None, RNA_h5Seurat = None, Spatial_file = None, Spatial_h5ad = None, Spatial_h5Seurat = None, celltype_key = None, celltype_file = None, my_python_path, output_path = None):
+    def __init__(self, RNA_file = None, RNA_h5ad = None, RNA_h5Seurat = None, Spatial_file = None, Spatial_h5ad = None, Spatial_h5Seurat = None, celltype_key = None, celltype_file = None, my_python_path = None, output_path = None):
         """
             @author: wen zhang
             This function integrates spatial and scRNA-seq data to predictes the celltype deconvolution of the spots.
