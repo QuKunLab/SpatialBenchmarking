@@ -1,6 +1,5 @@
 # Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution
-
-<img width="703" alt="Pipeline" src="https://user-images.githubusercontent.com/44384930/148059476-85236f14-03dd-4039-9587-2b5af19fe9c8.jpg">
+![Figure1](https://user-images.githubusercontent.com/100823826/156927073-de21af45-8eee-476a-a11d-3b67c968eb70.jpg)
 
 __Implementation description__
 
