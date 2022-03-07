@@ -24,7 +24,7 @@ sc_adata = sc_adata[:, intersect].copy()
 G = len(intersect)
 
 # let us filter some genes
-G = 2000
+G = 7000
 sc.pp.filter_genes(sc_adata, min_counts=10)
 
 sc_adata.layers["counts"] = sc_adata.X.copy()
@@ -51,7 +51,7 @@ sc_adata = sc_adata[:, intersect].copy()
 G = len(intersect)
 scvi.data.setup_anndata(sc_adata, layer="counts", labels_key=celltype_key)
 sc_model = CondSCVI(sc_adata, weight_obs=True)
-sc_model.train(max_epochs=250,lr=0.0001)
+sc_model.train(max_epochs=250,lr=0.001)
 sc_model.history["elbo_train"].plot()
 scvi.data.setup_anndata(st_adata, layer="counts")
 st_model = DestVI.from_rna_model(st_adata, sc_model)
