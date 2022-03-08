@@ -113,6 +113,8 @@ class GenePrediction:
         predict = test_list
         feature = train_list
         pv = int(len(feature)/2)
+        if pv > 100:
+            pv = 100
         Spatial = Spatial_data[feature]
         Img_Genes = SpaGE(Spatial,RNA_data.T,n_pv=pv,genes_to_predict = predict)
         result = Img_Genes[predict]
@@ -185,6 +187,7 @@ class GenePrediction:
         cost_marker_genes = cdist(dge[:, markers_in_sc]/np.amax(dge[:, markers_in_sc]),insitu_matrix/np.amax(insitu_matrix))
         alpha_linear = 0.5
         gw = nc.rc._GWadjusted.gromov_wasserstein_adjusted_norm(cost_marker_genes, cost_expression, cost_locations,alpha_linear, p_expression, p_location,'square_loss', epsilon=5e-3, verbose=True)
+        np.save(novo.npy, gw)
         sdge = np.dot(dge.T, gw)
         imputed = pd.DataFrame(sdge,index=RNA_data.index)
         result = imputed.loc[test_genes]
@@ -220,6 +223,7 @@ class GenePrediction:
         
         issc.transport_plan(C**2, alpha=0, rho=1.0, epsilon=1.0, cor_matrix=mcc, scaling=False)
         gamma = issc.gamma_mapping
+        np.save(novo.npy, gw)
         for j in range(gamma.shape[1]):
             gamma[:,j] = gamma[:,j]/np.sum(gamma[:,j])
         X_pred = np.matmul(gamma.T, np.array(issc.sc_data.values))
