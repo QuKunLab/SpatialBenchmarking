@@ -1,9 +1,0 @@
-	Data25
-Tangram	0.921625
-gimVI	0.85821875
-SpaGE	0.57225
-Seurat	0.485
-SpaOTsc	0.62584375
-novoSpaRc	0.44625
-stPlus	0.313125
-LIGER	0.2776875

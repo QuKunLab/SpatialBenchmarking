@@ -1,9 +1,0 @@
-	Data28
-gimVI	0.91990625
-Tangram	0.9391875
-novoSpaRc	0.701
-SpaGE	0.66275
-LIGER	0.42290625
-Seurat	0.32821875
-SpaOTsc	0.25603125
-stPlus	0.27
