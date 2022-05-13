@@ -1,5 +1,5 @@
 # Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution
-![Figure1](/Users/wenzhang/GoogleDrive/SpatialBenchmarking/NMCheck/WorkFolw.jpg)
+![WorkFolw](https://user-images.githubusercontent.com/100823826/168304254-1ce93601-9fb5-4546-b2d5-1dc79d890f08.jpg)
 
 __Implementation description__
 
@@ -41,6 +41,6 @@ __Datasets__
   All datasets used are publicly available data, for convenience datasets can be downloaded from: 
 https://drive.google.com/drive/folders/1pHmE9cg_tMcouV1LFJFtbyBJNp7oQo9J?usp=sharing.
 
-For citation and further information please refer to: "Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution", with DOI: `10.1038/s41592-022-01480-9`
+For citation and further information please refer to: __"Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution"__.
 
 
