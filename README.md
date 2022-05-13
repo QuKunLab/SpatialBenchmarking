@@ -1,9 +1,9 @@
 # Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution
-![Figure1](https://user-images.githubusercontent.com/100823826/156927073-de21af45-8eee-476a-a11d-3b67c968eb70.jpg)
+![Figure1](/Users/wenzhang/GoogleDrive/SpatialBenchmarking/NMCheck/WorkFolw.jpg)
 
 __Implementation description__
 
-  We collected 45 paired datasets and 32 simulated datasets and designed a pipeline to 1) systematically evaluate the accuracy of eight integration methods for predicting the RNA spatial distribution. 2) Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. 3) Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of ten integration methods for celltypes deconvolution.
+  We collected 45 paired datasets and 32 simulated datasets and designed a pipeline to 1) systematically evaluate the accuracy of eight integration methods for predicting the RNA spatial distribution. 2) test four schemes of input expression matrices for predicting the RNA spatial distribution. 3) Then we down-sampled the spatial transcriptomics data of five datasets to test the performance of the integration methods for datasets with sparse expression matrices. 4) Beyond assessment of the spatial distribution of RNA transcripts, we also tested the performance of ten integration methods for celltypes deconvolution.
 
   We provide example guidance to help researchers select optimal integration methods for working with their datasets:
   the [doc/Tutorial.pdf](https://github.com/QuKunLab/SpatialBenchmarking/blob/main/doc/Tutorial.pdf) is an example showing how to use them to predict new spatial gene patterns
@@ -40,5 +40,7 @@ __Datasets__
 
   All datasets used are publicly available data, for convenience datasets can be downloaded from: 
 https://drive.google.com/drive/folders/1pHmE9cg_tMcouV1LFJFtbyBJNp7oQo9J?usp=sharing.
+
+For citation and further information please refer to: "Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution", with DOI: `10.1038/s41592-022-01480-9`
 
 

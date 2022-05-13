@@ -104,6 +104,6 @@ adata_vis = mod.export_posterior(
     adata_vis, sample_kwargs={'num_samples': 1000, 'batch_size': mod.adata.n_obs, 'use_gpu': True}
 )
 print(adata_vis)
-adata_vis.obsm['q05_cell_abundance_w_sf'].to_csv(output_file_path + '/Cell2locations_result.txt')
+adata_vis.obsm['q05_cell_abundance_w_sf'].to_csv(output_file_path + '/Cell2location_result.txt')
 
 
