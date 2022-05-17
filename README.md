@@ -22,11 +22,13 @@ __Dependencies and requirements for Predicting undetected transcripts__
 5. `sh Config.env.sh`
 6. Enter R and install required packages by command : `install.packages(c('vctrs','rlang','htmlwidgets'))`
 
+Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
+
 __Dependencies and requirements for Predicting celltypes deconvolution__
 
  Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
-
-The package has been tested on Linux system (CentOS) and should work in any valid python environment. Installation of Benchmarking may take about 7-15 minutes to install the dependencies.
+ 
+ The package has been tested on Linux system (CentOS) and should work in any valid python environment. 
 
 __Tutorial__
 
@@ -41,6 +43,6 @@ __Datasets__
   All datasets used are publicly available data, for convenience datasets can be downloaded from: 
 https://drive.google.com/drive/folders/1pHmE9cg_tMcouV1LFJFtbyBJNp7oQo9J?usp=sharing.
 
-For citation and further information please refer to: __"Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution"__.
+For citation and further information please refer to: __Li, B., Zhang, W., Guo, C. et al. Benchmarking spatial and single-cell transcriptomics integration methods for transcript distribution prediction and cell type deconvolution. Nat Methods (2022). https://doi.org/10.1038/s41592-022-01480-9.
 
 
