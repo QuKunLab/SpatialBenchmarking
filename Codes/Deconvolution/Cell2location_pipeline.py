@@ -75,7 +75,7 @@ inf_aver = inf_aver.loc[intersect, :].copy()
 
 # prepare anndata for cell2location model
 scvi.data.setup_anndata(adata=adata_vis)
-scvi.data.view_anndata_setup(adata_vis)
+#scvi.data.view_anndata_setup(adata_vis)
 
 # create and train the model
 mod = cell2location.models.Cell2location(
