@@ -26,7 +26,7 @@ Installation of Benchmarking may take about 7-15 minutes to install the dependen
 
 __Dependencies and requirements for Predicting celltypes deconvolution__
 
- Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages(Cell2location, RCTD, SpatialDWLS, Stereoscope, SPOTlight, Tangram, Seurat, STRIDE, DestVI, DSTG)
+Before you run the pipeline, please make sure that you have installed and python3, R and all the ten packages: Cell2location(Version 0.6a0), RCTD(Version 1.2.0), SpatialDWLS(by Giotto of Version 1.0.4), Stereoscope(within the scvi-tools Version 0.11.0), SPOTlight(Version 0.1.7), Tangram(Version 1.0.0), Seurat(Version 4.0.5), STRIDE(Version 0.0.1b), DestVI(scvi-tools Version 0.11.0), DSTG(Version 0.0.1)
  
  The package has been tested on Linux system (CentOS) and should work in any valid python environment. 
 
