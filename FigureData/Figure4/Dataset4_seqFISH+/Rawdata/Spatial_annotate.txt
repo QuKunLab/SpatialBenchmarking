@@ -260,7 +260,7 @@
 258	13	ExcitatoryL2and3
 259	18	ExcitatoryL5and6
 260	7	Inhibitory
-261	17	Neuroblasts
+261	17	Neuroblast
 262	18	ExcitatoryL5and6
 263	2	Endo
 264	23	Inhibitory
